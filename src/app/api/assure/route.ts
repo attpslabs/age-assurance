@@ -115,11 +115,18 @@ export async function POST(request: Request) {
 
     // Store verification result in Netlify Blobs (persists across function instances)
     if (userContextData) {
-      const store = getStore('verifications')
-      await store.setJSON(userContextData, {
-        verifiedAt: Date.now(),
-        used: false,
-      } as VerificationData)
+      try {
+        console.log('Storing verification for UUID:', userContextData)
+        const store = getStore('verifications')
+        await store.setJSON(userContextData, {
+          verifiedAt: Date.now(),
+          used: false,
+        } as VerificationData)
+        console.log('Successfully stored verification')
+      } catch (blobError) {
+        console.error('Failed to store verification in Netlify Blobs:', blobError)
+        // Continue anyway - the proof was verified successfully
+      }
     }
 
     // Return success - Self SDK will trigger the frontend onSuccess callback
@@ -163,8 +170,19 @@ export async function GET(request: Request) {
     }
 
     // Check if this user was recently verified (lookup by UUID from Netlify Blobs)
-    const store = getStore('verifications')
-    const verification = await store.get(uuid, { type: 'json' }) as VerificationData | null
+    let verification: VerificationData | null = null
+    try {
+      console.log('Looking up verification for UUID:', uuid)
+      const store = getStore('verifications')
+      verification = await store.get(uuid, { type: 'json' }) as VerificationData | null
+      console.log('Verification lookup result:', verification)
+    } catch (blobError) {
+      console.error('Failed to read from Netlify Blobs:', blobError)
+      return Response.json(
+        { success: false, error: 'Storage error - please try again' },
+        { status: 500 }
+      )
+    }
 
     if (!verification) {
       return Response.json(
