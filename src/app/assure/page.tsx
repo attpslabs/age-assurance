@@ -19,6 +19,13 @@ interface SignedAttestation {
   sigKey: string
 }
 
+// API response type
+interface AttestationResponse {
+  success: boolean
+  attestation?: SignedAttestation
+  error?: string
+}
+
 export default function AssurePage() {
   const router = useRouter()
   const [session, setSession] = useState<Session | null>(null)
@@ -72,13 +79,15 @@ export default function AssurePage() {
 
     try {
       const response = await fetch(`/api/assure?did=${encodeURIComponent(session.did)}`)
-      const data = await response.json()
+      const data: AttestationResponse = await response.json()
 
       if (!response.ok || !data.success) {
         throw new Error(data.error || 'Failed to get signed attestation')
       }
 
-      setSignedAttestation(data.attestation)
+      if (data.attestation) {
+        setSignedAttestation(data.attestation)
+      }
       setStatus('review')
     } catch (err) {
       console.error('Failed to fetch signed attestation:', err)
