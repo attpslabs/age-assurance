@@ -71,7 +71,7 @@ export default function AssurePage() {
       disclosures: {
         minimumAge: 18,
       },
-      devMode: true, // Set to false for production
+      devMode: false, // Production mode - requires real passport
     }).build()
 
     setSelfApp(app)

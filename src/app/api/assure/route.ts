@@ -16,8 +16,8 @@ const configStore = new DefaultConfigStore({
 
 const selfVerifier = new SelfBackendVerifier(
   'attps-age-assurance', // scope (must match frontend QR config)
-  'https://attps.social/api/assure', // endpoint (updated in prod)
-  true, // mockPassport - true for testnet/dev, false for mainnet
+  'https://attps.social/api/assure', // endpoint
+  false, // mockPassport - false for production (real passports)
   AllIds, // allowed attestation types (passport, ID card, etc.)
   configStore, // verification config
   'uuid' // user identifier type
