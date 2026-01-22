@@ -6,6 +6,10 @@ import { getSession, clearSession, Session } from '@/lib/session'
 import { signOut, restoreSession } from '@/lib/atproto'
 import { SelfQRcodeWrapper, SelfAppBuilder } from '@selfxyz/qrcode'
 import { logo } from '@/lib/logo'
+import { v5 as uuidv5 } from 'uuid'
+
+// Namespace UUID for generating deterministic UUIDs from DIDs
+const DID_NAMESPACE = '6ba7b810-9dad-11d1-80b4-00c04fd430c8' // DNS namespace
 
 type VerificationStatus = 'idle' | 'consent' | 'scanning' | 'fetching' | 'review' | 'writing' | 'done' | 'error'
 
@@ -54,12 +58,15 @@ export default function AssurePage() {
   function handleStartVerification() {
     if (!session || !consentChecked) return
 
+    // Generate a deterministic UUID from the DID for Self SDK
+    const userUuid = uuidv5(session.did, DID_NAMESPACE)
+
     const app = new SelfAppBuilder({
       appName: 'ATTPS Age Assurance',
       scope: 'attps-age-assurance',
       endpoint: `${window.location.origin}/api/assure`,
       logoBase64: logo,
-      userId: session.did,
+      userId: userUuid,
       userIdType: 'uuid',
       disclosures: {
         minimumAge: 18,
