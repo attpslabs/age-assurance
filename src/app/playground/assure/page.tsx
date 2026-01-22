@@ -7,7 +7,12 @@ import { signOut, restoreSession } from '@/lib/atproto'
 import { SelfQRcodeWrapper, SelfAppBuilder } from '@selfxyz/qrcode'
 import { logo } from '@/lib/logo'
 import { v5 as uuidv5 } from 'uuid'
-import { TestModeBanner } from '@/components/TestModeBanner'
+
+const StarIcon = () => (
+  <svg width="40" height="40" viewBox="0 0 150 148" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M75 0L76.2683 34.2209C77.0442 55.1571 93.8432 71.9475 114.78 72.7127L150 74L114.78 75.2873C93.8432 76.0525 77.0442 92.8429 76.2683 113.779L75 148L73.7317 113.779C72.9558 92.8429 56.1568 76.0525 35.2202 75.2873L0 74L35.2202 72.7127C56.1568 71.9475 72.9558 55.1571 73.7317 34.2209L75 0Z" fill="currentColor"/>
+  </svg>
+)
 
 // Namespace UUID for generating deterministic UUIDs from DIDs
 const DID_NAMESPACE = '6ba7b810-9dad-11d1-80b4-00c04fd430c8' // DNS namespace
@@ -171,7 +176,7 @@ export default function PlaygroundAssurePage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
       </div>
     )
   }
@@ -182,8 +187,15 @@ export default function PlaygroundAssurePage() {
 
   return (
     <>
-      <TestModeBanner />
-      <div className="min-h-screen flex flex-col items-center justify-center p-8 pt-16 bg-black">
+      {/* Star icon header - same as playground page */}
+      <header className="w-full py-6 sticky top-0 z-40 bg-black">
+        <div className="flex justify-center">
+          <a href="/" className="text-orange-500 hover:text-orange-400 transition-colors">
+            <StarIcon />
+          </a>
+        </div>
+      </header>
+      <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-black">
         <main className="flex flex-col items-center gap-8 max-w-md w-full">
           <div className="text-center">
             <h1 className="text-3xl font-bold text-white mb-2">
@@ -200,7 +212,7 @@ export default function PlaygroundAssurePage() {
                 <h2 className="text-lg font-semibold text-white mb-4 text-center">
                   Test Attestation
                 </h2>
-                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 mb-4">
+                <div className="bg-yellow-500/10 border border-orange-500/30 rounded-lg p-3 mb-4">
                   <p className="text-yellow-500 text-sm text-center">
                     This is a test flow using mock passports. The attestation will be written to a test collection.
                   </p>
@@ -258,14 +270,23 @@ export default function PlaygroundAssurePage() {
                   />
                 </div>
                 <p className="text-sm text-gray-400 text-center">
-                  Open the Self app and scan the QR code. Use a mock passport to test the flow.
+                  Open the Self app and scan the QR code. Use a{' '}
+                  <a
+                    href="https://docs.self.xyz/use-self/using-mock-passports#generating-mock-passport"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-orange-500 hover:text-orange-400"
+                  >
+                    mock passport
+                  </a>{' '}
+                  to test the flow.
                 </p>
               </>
             )}
 
             {status === 'fetching' && (
               <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto mb-4"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
                 <p className="text-gray-400">
                   Getting test attestation...
                 </p>
@@ -327,7 +348,7 @@ export default function PlaygroundAssurePage() {
 
             {status === 'writing' && (
               <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto mb-4"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
                 <p className="text-gray-400">
                   Writing test attestation...
                 </p>
@@ -357,7 +378,7 @@ export default function PlaygroundAssurePage() {
                 <p className="text-gray-400 mb-4">
                   The test attestation has been written to your account.
                 </p>
-                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 mb-6">
+                <div className="bg-yellow-500/10 border border-orange-500/30 rounded-lg p-4 mb-6">
                   <p className="text-yellow-500 text-sm font-medium mb-2">
                     This is NOT a valid verification
                   </p>

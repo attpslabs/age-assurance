@@ -8,6 +8,12 @@ import { SelfQRcodeWrapper, SelfAppBuilder } from '@selfxyz/qrcode'
 import { logo } from '@/lib/logo'
 import { v5 as uuidv5 } from 'uuid'
 
+const StarIcon = () => (
+  <svg width="40" height="40" viewBox="0 0 150 148" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M75 0L76.2683 34.2209C77.0442 55.1571 93.8432 71.9475 114.78 72.7127L150 74L114.78 75.2873C93.8432 76.0525 77.0442 92.8429 76.2683 113.779L75 148L73.7317 113.779C72.9558 92.8429 56.1568 76.0525 35.2202 75.2873L0 74L35.2202 72.7127C56.1568 71.9475 72.9558 55.1571 73.7317 34.2209L75 0Z" fill="currentColor"/>
+  </svg>
+)
+
 // Namespace UUID for generating deterministic UUIDs from DIDs
 const DID_NAMESPACE = '6ba7b810-9dad-11d1-80b4-00c04fd430c8' // DNS namespace
 
@@ -170,7 +176,7 @@ export default function AssurePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-black">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
       </div>
     )
@@ -181,120 +187,129 @@ export default function AssurePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-8">
-      <main className="flex flex-col items-center gap-8 max-w-md w-full">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Age Verification
-          </h1>
-          <p className="text-gray-600">
-            Welcome, <span className="font-medium">@{session.handle}</span>
-          </p>
+    <>
+      {/* Star icon header */}
+      <header className="w-full py-6 sticky top-0 z-40 bg-black">
+        <div className="flex justify-center">
+          <a href="/" className="text-orange-500 hover:text-orange-400 transition-colors">
+            <StarIcon />
+          </a>
         </div>
+      </header>
+      <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-black">
+        <main className="flex flex-col items-center gap-8 max-w-md w-full">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl text-white mb-4" style={{ fontFamily: 'var(--font-dm-serif-text)' }}>
+              Age Verification
+            </h1>
+            <p className="text-gray-400">
+              Welcome, <span className="font-medium text-white">@{session.handle}</span>
+            </p>
+          </div>
 
-        <div className="w-full bg-white rounded-xl shadow-lg p-6">
-          {status === 'consent' && (
-            <>
-              <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-                Choose Your Attestation
-              </h2>
-              <p className="text-sm text-gray-600 mb-6 text-center">
-                Select what you would like to prove and add to your AT Protocol
-                account. This information will be publicly visible.
-              </p>
-              <label className="flex items-start gap-3 p-4 border rounded-lg cursor-pointer hover:bg-gray-50 mb-6">
-                <input
-                  type="checkbox"
-                  checked={consentChecked}
-                  onChange={(e) => setConsentChecked(e.target.checked)}
-                  className="mt-0.5 w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                />
-                <div>
-                  <span className="font-medium text-gray-800">
-                    Prove I am 18 or older
-                  </span>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Verify your age using your passport via the Self app. Only a
-                    cryptographic proof is stored - no personal data.
-                  </p>
-                </div>
-              </label>
-              <button
-                onClick={handleStartVerification}
-                disabled={!consentChecked}
-                className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
-                  consentChecked
-                    ? 'bg-blue-600 text-white hover:bg-blue-700'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                }`}
-              >
-                Generate QR Code
-              </button>
-            </>
-          )}
-
-          {status === 'scanning' && selfApp && (
-            <>
-              <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-                Verify Your Age
-              </h2>
-              <div className="flex justify-center mb-4">
-                <SelfQRcodeWrapper
-                  selfApp={selfApp}
-                  onSuccess={handleSelfSuccess}
-                  onError={(error) => {
-                    console.error('Self QR error:', error)
-                    setError(
-                      error?.reason || error?.error_code || 'Verification failed'
-                    )
-                    setStatus('error')
-                  }}
-                  size={250}
-                />
-              </div>
-              <p className="text-sm text-gray-600 text-center">
-                Scan the QR code with the Self app to verify your age using your
-                passport. No personal data is stored - only a cryptographic
-                proof that you are 18+.
-              </p>
-            </>
-          )}
-
-          {status === 'fetching' && (
-            <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
-              <p className="text-gray-600">
-                Getting signed attestation...
-              </p>
-            </div>
-          )}
-
-          {status === 'review' && signedAttestation && (
-            <div className="py-4">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg
-                  className="w-6 h-6 text-green-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
+          <div className="w-full bg-gray-900 rounded-xl shadow-lg p-6 border border-gray-800">
+            {status === 'consent' && (
+              <>
+                <h2 className="text-lg font-semibold text-white mb-4 text-center">
+                  Choose Your Attestation
+                </h2>
+                <p className="text-sm text-gray-400 mb-6 text-center">
+                  Select what you would like to prove and add to your AT Protocol
+                  account. This information will be publicly visible.
+                </p>
+                <label className="flex items-start gap-3 p-4 border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800 mb-6">
+                  <input
+                    type="checkbox"
+                    checked={consentChecked}
+                    onChange={(e) => setConsentChecked(e.target.checked)}
+                    className="mt-0.5 w-5 h-5 rounded border-gray-600 text-orange-500 focus:ring-orange-500 bg-gray-800"
                   />
-                </svg>
+                  <div>
+                    <span className="font-medium text-white">
+                      Prove I am 18 or older
+                    </span>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Verify your age using your passport via the Self app. Only a
+                      cryptographic proof is stored - no personal data.
+                    </p>
+                  </div>
+                </label>
+                <button
+                  onClick={handleStartVerification}
+                  disabled={!consentChecked}
+                  className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
+                    consentChecked
+                      ? 'bg-orange-500 text-white hover:bg-orange-400'
+                      : 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                  }`}
+                >
+                  Generate QR Code
+                </button>
+              </>
+            )}
+
+            {status === 'scanning' && selfApp && (
+              <>
+                <h2 className="text-lg font-semibold text-white mb-4 text-center">
+                  Verify Your Age
+                </h2>
+                <div className="flex justify-center mb-4">
+                  <SelfQRcodeWrapper
+                    selfApp={selfApp}
+                    onSuccess={handleSelfSuccess}
+                    onError={(error) => {
+                      console.error('Self QR error:', error)
+                      setError(
+                        error?.reason || error?.error_code || 'Verification failed'
+                      )
+                      setStatus('error')
+                    }}
+                    size={250}
+                  />
+                </div>
+                <p className="text-sm text-gray-400 text-center">
+                  Scan the QR code with the Self app to verify your age using your
+                  passport. No personal data is stored - only a cryptographic
+                  proof that you are 18+.
+                </p>
+              </>
+            )}
+
+            {status === 'fetching' && (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+                <p className="text-gray-400">
+                  Getting signed attestation...
+                </p>
               </div>
-              <h2 className="text-lg font-semibold text-gray-800 mb-2 text-center">
-                Age Verified!
-              </h2>
-              <p className="text-sm text-gray-600 mb-4 text-center">
-                Review the signed attestation that will be written to your account:
-              </p>
-              <div className="bg-gray-50 rounded-lg p-4 mb-4 font-mono text-sm">
-                <div className="text-gray-500 mb-2">social.attps.ageassurance</div>
-                <pre className="text-gray-800 whitespace-pre-wrap break-all">
+            )}
+
+            {status === 'review' && signedAttestation && (
+              <div className="py-4">
+                <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg
+                    className="w-6 h-6 text-orange-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <h2 className="text-lg font-semibold text-white mb-2 text-center">
+                  Age Verified!
+                </h2>
+                <p className="text-sm text-gray-400 mb-4 text-center">
+                  Review the signed attestation that will be written to your account:
+                </p>
+                <div className="bg-gray-800 rounded-lg p-4 mb-4 font-mono text-sm">
+                  <div className="text-orange-500 mb-2">social.attps.ageassurance</div>
+                  <pre className="text-gray-300 whitespace-pre-wrap break-all">
 {JSON.stringify(
   {
     $type: 'social.attps.ageassurance',
@@ -308,113 +323,119 @@ export default function AssurePage() {
   null,
   2
 )}
-                </pre>
-              </div>
-              <p className="text-xs text-gray-500 mb-4 text-center">
-                This record includes a cryptographic signature from @attps.social
-                that proves the attestation is authentic.
-              </p>
-              <button
-                onClick={writeAttestation}
-                className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-              >
-                Write to my account
-              </button>
-            </div>
-          )}
-
-          {status === 'writing' && (
-            <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">
-                Writing attestation to your account...
-              </p>
-            </div>
-          )}
-
-          {status === 'done' && (
-            <div className="text-center py-8">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg
-                  className="w-8 h-8 text-green-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  </pre>
+                </div>
+                <p className="text-xs text-gray-500 mb-4 text-center">
+                  This record includes a cryptographic signature from @attps.social
+                  that proves the attestation is authentic.
+                </p>
+                <button
+                  onClick={writeAttestation}
+                  className="w-full bg-orange-500 text-white py-3 px-4 rounded-lg font-medium hover:bg-orange-400 transition-colors"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
+                  Write to my account
+                </button>
               </div>
-              <h2 className="text-xl font-semibold text-green-800 mb-2">
-                Verification Complete!
-              </h2>
-              <p className="text-gray-600 mb-4">
-                Your age has been verified and the attestation has been written
-                to your AT Protocol account.
-              </p>
-              <p className="text-sm text-gray-500 mb-4">
-                Apps that trust @attps.social can now verify you are 18+.
-              </p>
-              <button
-                onClick={() => router.push('/manage')}
-                className="text-blue-600 hover:text-blue-700 font-medium text-sm"
-              >
-                View & manage your attestations
-              </button>
-            </div>
-          )}
+            )}
 
-          {status === 'error' && (
-            <div className="text-center py-8">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg
-                  className="w-8 h-8 text-red-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+            {status === 'writing' && (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+                <p className="text-gray-400">
+                  Writing attestation to your account...
+                </p>
+              </div>
+            )}
+
+            {status === 'done' && (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg
+                    className="w-8 h-8 text-orange-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <h2 className="text-xl font-semibold text-white mb-2">
+                  Verification Complete!
+                </h2>
+                <p className="text-gray-400 mb-4">
+                  Your age has been verified and the attestation has been written
+                  to your AT Protocol account.
+                </p>
+                <p className="text-sm text-gray-500 mb-4">
+                  Apps that trust @attps.social can now verify you are 18+.
+                </p>
+                <button
+                  onClick={() => router.push('/manage')}
+                  className="text-orange-500 hover:text-orange-400 font-medium text-sm"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                  View & manage your attestations
+                </button>
               </div>
-              <h2 className="text-xl font-semibold text-red-800 mb-2">
-                Verification Failed
-              </h2>
-              <p className="text-gray-600 mb-4">{error}</p>
-              <button
-                onClick={handleRetry}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-              >
-                Try Again
-              </button>
-            </div>
-          )}
-        </div>
+            )}
 
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => router.push('/manage')}
-            className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-          >
-            Manage attestations
-          </button>
-          <span className="text-gray-300">|</span>
-          <button
-            onClick={handleSignOut}
-            className="text-sm text-gray-500 hover:text-gray-700 underline"
-          >
-            Sign out
-          </button>
-        </div>
-      </main>
-    </div>
+            {status === 'error' && (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg
+                    className="w-8 h-8 text-red-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </div>
+                <h2 className="text-xl font-semibold text-white mb-2">
+                  Verification Failed
+                </h2>
+                <p className="text-white mb-4 flex items-center justify-center gap-2">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {error}
+                </p>
+                <button
+                  onClick={handleRetry}
+                  className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-400"
+                >
+                  Try Again
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => router.push('/manage')}
+              className="text-sm text-orange-500 hover:text-orange-400 font-medium"
+            >
+              Manage attestations
+            </button>
+            <span className="text-gray-600">|</span>
+            <button
+              onClick={handleSignOut}
+              className="text-sm text-gray-500 hover:text-gray-400 underline"
+            >
+              Sign out
+            </button>
+          </div>
+        </main>
+      </div>
+    </>
   )
 }
