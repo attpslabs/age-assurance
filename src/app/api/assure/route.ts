@@ -171,9 +171,10 @@ export async function GET(request: Request) {
 
     // Check if this user was recently verified (lookup by UUID from Netlify Blobs)
     let verification: VerificationData | null = null
+    let store: ReturnType<typeof getStore>
     try {
       console.log('Looking up verification for UUID:', uuid)
-      const store = getStore('verifications')
+      store = getStore('verifications')
       verification = await store.get(uuid, { type: 'json' }) as VerificationData | null
       console.log('Verification lookup result:', verification)
     } catch (blobError) {
