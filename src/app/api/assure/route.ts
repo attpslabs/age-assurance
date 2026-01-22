@@ -170,12 +170,18 @@ export async function GET(request: Request) {
     }
 
     // Check if this user was recently verified (lookup by UUID from Netlify Blobs)
+    // Note: Self SDK transforms the UUID in userContextData
+    // Stored format: "000000000000000000000000000000000000000000000000000000000000a4ec" + "00000000000000000000000000000000" + uuid_without_dashes
+    const uuidNoDashes = uuid.replace(/-/g, '')
+    const selfTransformedUuid = '000000000000000000000000000000000000000000000000000000000000a4ec' + '00000000000000000000000000000000' + uuidNoDashes
+
     let verification: VerificationData | null = null
     let store: ReturnType<typeof getStore>
     try {
       console.log('Looking up verification for UUID:', uuid)
+      console.log('Self-transformed UUID:', selfTransformedUuid)
       store = getStore('verifications')
-      verification = await store.get(uuid, { type: 'json' }) as VerificationData | null
+      verification = await store.get(selfTransformedUuid, { type: 'json' }) as VerificationData | null
       console.log('Verification lookup result:', verification)
     } catch (blobError) {
       console.error('Failed to read from Netlify Blobs:', blobError)
@@ -194,7 +200,7 @@ export async function GET(request: Request) {
 
     // Check if verification is still fresh (within 5 minutes)
     if (Date.now() - verification.verifiedAt > 5 * 60 * 1000) {
-      await store.delete(uuid)
+      await store.delete(selfTransformedUuid)
       return Response.json(
         { success: false, error: 'Verification expired' },
         { status: 410 }
@@ -210,7 +216,7 @@ export async function GET(request: Request) {
     }
 
     // Mark as used
-    await store.setJSON(uuid, { ...verification, used: true } as VerificationData)
+    await store.setJSON(selfTransformedUuid, { ...verification, used: true } as VerificationData)
 
     // Get the private key from environment
     const privateKey = process.env.ATTESTATION_PRIVATE_KEY
