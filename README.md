@@ -1,6 +1,6 @@
 # ATTPS Age Assurance
 
-Privacy first age assurance service for AT Protocol users. Users prove they are 18 or older using Self Protocol's zero-knowledge proofs, and receive a cryptographically signed attestation written to their PDS.
+Privacy first age assurance system for the AT Protocol. Users prove they are 18 or older using Self Protocol's zero-knowledge proofs, and receive a cryptographically signed attestation written to their PDS.
 
 **Live:** [attps.social](https://attps.social)
 **Assurer DID:** `did:plc:uh7zr6mlwxneec773o5dkcrl` (@attps.social)
@@ -57,8 +57,6 @@ const payload = { subject, ageAtLeast18, assuredAt, assurer }
 const payloadBytes = new TextEncoder().encode(JSON.stringify(payload))
 const isValid = await crypto.subtle.verify('Ed25519', publicKey, sig, payloadBytes)
 ```
-
-Note: Apps are trusting that @attps.social properly verified the Self Protocol ZK proof. The Ed25519 signature verifies the attestation hasn't been tampered with and was issued by the assurer - it does not re-verify the underlying age proof.
 
 ## Development
 

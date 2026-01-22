@@ -52,7 +52,7 @@ export default function ManagePage() {
 
       const response = await restored.agent.com.atproto.repo.listRecords({
         repo: did,
-        collection: 'social.attps.assurance.age',
+        collection: 'social.attps.ageassurance',
         limit: 100,
       })
 
@@ -94,7 +94,7 @@ export default function ManagePage() {
 
       await restored.agent.com.atproto.repo.deleteRecord({
         repo: session.did,
-        collection: 'social.attps.assurance.age',
+        collection: 'social.attps.ageassurance',
         rkey,
       })
 

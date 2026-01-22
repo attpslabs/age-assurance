@@ -123,10 +123,10 @@ export default function AssurePage() {
 
         await restored.agent.com.atproto.repo.putRecord({
           repo: session.did,
-          collection: 'social.attps.assurance.age',
+          collection: 'social.attps.ageassurance',
           rkey: 'self',
           record: {
-            $type: 'social.attps.assurance.age',
+            $type: 'social.attps.ageassurance',
             subject: signedAttestation.subject,
             ageAtLeast18: signedAttestation.ageAtLeast18,
             assuredAt: signedAttestation.assuredAt,
@@ -293,11 +293,11 @@ export default function AssurePage() {
                 Review the signed attestation that will be written to your account:
               </p>
               <div className="bg-gray-50 rounded-lg p-4 mb-4 font-mono text-sm">
-                <div className="text-gray-500 mb-2">social.attps.assurance.age</div>
+                <div className="text-gray-500 mb-2">social.attps.ageassurance</div>
                 <pre className="text-gray-800 whitespace-pre-wrap break-all">
 {JSON.stringify(
   {
-    $type: 'social.attps.assurance.age',
+    $type: 'social.attps.ageassurance',
     subject: signedAttestation.subject,
     ageAtLeast18: signedAttestation.ageAtLeast18,
     assuredAt: signedAttestation.assuredAt,

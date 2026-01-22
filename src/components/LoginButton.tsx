@@ -30,7 +30,11 @@ export default function LoginButton() {
       // signIn will redirect to Bluesky for auth
     } catch (err) {
       console.error('Sign in error:', err)
-      setError(err instanceof Error ? err.message : 'Failed to sign in')
+      const message = err instanceof Error ? err.message : 'Failed to sign in'
+      // Don't show error for user-initiated navigation (back button, etc.)
+      if (!message.toLowerCase().includes('user navigated')) {
+        setError(message)
+      }
       setIsLoading(false)
     }
   }

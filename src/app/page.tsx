@@ -114,17 +114,19 @@ export default function Home() {
       {/* People Section */}
         <section id="people" className="w-full max-w-2xl mt-24 scroll-mt-24">
           <h2 className="text-4xl md:text-5xl text-white text-center mb-8" style={{ fontFamily: 'var(--font-dm-serif-text)' }}>For People</h2>
-          <p className="text-gray-400 text-center">
-            People who have verified their age will be listed here.
+          <p className="text-center">
+            <a
+              href="/playground"
+              className="text-orange-500 hover:text-orange-400 text-sm font-medium"
+            >
+              Try it first in the Playground →
+            </a>
           </p>
         </section>
 
         {/* Apps Section */}
         <section id="apps" className="w-full max-w-2xl mt-24 scroll-mt-24">
           <h2 className="text-4xl md:text-5xl text-white text-center mb-8" style={{ fontFamily: 'var(--font-dm-serif-text)' }}>For Apps</h2>
-          <p className="text-gray-400 text-center">
-            Apps that support ATTPS Age Assurance will be listed here.
-          </p>
         </section>
 
       <footer className="mt-16 text-center text-sm text-gray-500">
