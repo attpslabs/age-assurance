@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import LoginButton from '@/components/LoginButton'
 import { restoreSession } from '@/lib/atproto'
 import { saveSession, getSession } from '@/lib/session'
+import { SphereMask } from '@/components/magicui/sphere-mask'
+import { Header } from '@/components/Header'
 
 export default function Home() {
   const router = useRouter()
@@ -47,31 +49,40 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-8">
-      <main className="flex flex-col items-center gap-8 max-w-md w-full">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            ATTPS Age Assurance
-          </h1>
-          <p className="text-gray-600">
-            Verify your age once, use it everywhere on the AT Protocol network.
-          </p>
-        </div>
+    <>
+      {/* Sunrise gradient background - only covers hero/sphere area */}
+      <div
+        className="absolute inset-x-0 top-0 h-[420px] -z-10"
+        style={{
+          background: 'linear-gradient(to bottom, #16213e 0%, #2d3561 15%, #4a3f6b 30%, #6d5578 45%, #9d6b7a 65%, #e8a87c 100%)'
+        }}
+      />
+      <Header />
+      <SphereMask />
 
-        <div className="w-full bg-white rounded-xl shadow-lg p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-            Sign in with your Bluesky account
-          </h2>
+      {/* Hero Section */}
+      <section className="text-center px-8 -mt-64 relative z-10">
+        <h1 className="text-5xl md:text-7xl text-white" style={{ fontFamily: 'var(--font-dm-serif-text)' }}>
+          Private<br />
+          Age Assurance<br />
+          on Bluesky
+        </h1>
+
+        <div className="mt-12 max-w-md mx-auto">
           <LoginButton />
         </div>
+      </section>
 
-        <div className="w-full bg-gray-50 rounded-xl p-6">
-          <p className="text-sm text-gray-600 text-center">
+      <div className="flex flex-col items-center p-8 pt-32">
+        <main className="flex flex-col items-center gap-8 max-w-md w-full">
+
+        <div className="w-full bg-gray-900/50 rounded-xl p-6 border border-gray-800">
+          <p className="text-sm text-gray-400 text-center">
             <a
               href="https://self.xyz"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 underline"
+              className="text-orange-500 underline"
             >
               Self
             </a>{' '}
@@ -84,7 +95,7 @@ export default function Home() {
               href="https://map.self.xyz"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 underline"
+              className="text-orange-500 underline"
             >
               Country coverage map
             </a>{' '}
@@ -100,14 +111,30 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="mt-16 text-center text-sm text-gray-400">
+      {/* People Section */}
+        <section id="people" className="w-full max-w-2xl mt-24 scroll-mt-24">
+          <h2 className="text-4xl md:text-5xl text-white text-center mb-8" style={{ fontFamily: 'var(--font-dm-serif-text)' }}>For People</h2>
+          <p className="text-gray-400 text-center">
+            People who have verified their age will be listed here.
+          </p>
+        </section>
+
+        {/* Apps Section */}
+        <section id="apps" className="w-full max-w-2xl mt-24 scroll-mt-24">
+          <h2 className="text-4xl md:text-5xl text-white text-center mb-8" style={{ fontFamily: 'var(--font-dm-serif-text)' }}>For Apps</h2>
+          <p className="text-gray-400 text-center">
+            Apps that support ATTPS Age Assurance will be listed here.
+          </p>
+        </section>
+
+      <footer className="mt-16 text-center text-sm text-gray-500">
         <p>
           Powered by{' '}
           <a
             href="https://self.xyz"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-gray-600"
+            className="underline hover:text-gray-300"
           >
             Self Protocol
           </a>{' '}
@@ -116,12 +143,13 @@ export default function Home() {
             href="https://atproto.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-gray-600"
+            className="underline hover:text-gray-300"
           >
             AT Protocol
           </a>
         </p>
       </footer>
-    </div>
+      </div>
+    </>
   )
 }

@@ -1,0 +1,75 @@
+"use client"
+
+import React, { useRef, useState } from "react"
+import { motion } from "motion/react"
+
+
+const StarIcon = () => (
+  <svg width="40" height="40" viewBox="0 0 150 148" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M75 0L76.2683 34.2209C77.0442 55.1571 93.8432 71.9475 114.78 72.7127L150 74L114.78 75.2873C93.8432 76.0525 77.0442 92.8429 76.2683 113.779L75 148L73.7317 113.779C72.9558 92.8429 56.1568 76.0525 35.2202 75.2873L0 74L35.2202 72.7127C56.1568 71.9475 72.9558 55.1571 73.7317 34.2209L75 0Z" fill="currentColor"/>
+  </svg>
+)
+
+interface NavItemConfig {
+  name: string
+  href: string
+  icon?: React.ReactNode
+}
+
+const navs: NavItemConfig[] = [
+  { name: "For People", href: "#people" },
+  { name: "For Apps", href: "#apps" },
+]
+
+export function Header() {
+  const ref = useRef<HTMLUListElement>(null)
+  const [left, setLeft] = useState(0)
+  const [width, setWidth] = useState(0)
+  const [opacity, setOpacity] = useState(0)
+
+  const handleMouseEnter = (e: React.MouseEvent<HTMLLIElement>) => {
+    const node = e.currentTarget
+    const rect = node.getBoundingClientRect()
+    setLeft(node.offsetLeft)
+    setWidth(rect.width)
+    setOpacity(1)
+  }
+
+  const handleMouseLeave = () => {
+    setOpacity(0)
+  }
+
+  return (
+    <header className="w-full py-6 sticky top-0 z-50">
+      <div className="relative mx-auto flex w-fit items-center">
+        {/* Star icon centered above the pill */}
+        <a href="/" className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 z-20 text-white hover:text-white/80 transition-colors">
+          <StarIcon />
+        </a>
+
+        <ul
+          onMouseLeave={handleMouseLeave}
+          className="relative flex w-fit rounded-full border border-white/20 p-1.5 backdrop-blur-md bg-black/30"
+          ref={ref}
+        >
+          {navs.map((item, index) => (
+            <React.Fragment key={item.name}>
+              <li
+                onMouseEnter={handleMouseEnter}
+                className="hover:text-primary text-primary/60 z-10 block cursor-pointer px-4 py-2 text-sm font-medium tracking-tight transition-colors duration-200 w-20 text-center"
+              >
+                <a href={item.href}>{item.name}</a>
+              </li>
+              {index === 0 && <li className="w-14" />}
+            </React.Fragment>
+          ))}
+          <motion.li
+            animate={{ left, width, opacity }}
+            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+            className="absolute top-1.5 bottom-1.5 rounded-full bg-white/20"
+          />
+        </ul>
+      </div>
+    </header>
+  )
+}

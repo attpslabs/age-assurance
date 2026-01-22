@@ -3,6 +3,12 @@
 import { useState } from 'react'
 import { signIn } from '@/lib/atproto'
 
+const BlueskyIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 568 501" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M123.121 33.664C188.241 82.553 258.281 181.68 284 234.873c25.719-53.192 95.759-152.32 160.879-201.21C491.866-1.611 568-28.906 568 57.947c0 17.346-9.945 145.713-15.778 166.555-20.275 72.453-94.155 90.933-159.875 79.748C507.222 323.8 536.444 388.56 473.333 453.32c-119.86 122.992-172.272-30.859-185.702-70.281-2.462-7.227-3.614-10.608-3.631-7.733-.017-2.875-1.169.506-3.631 7.733-13.43 39.422-65.842 193.273-185.702 70.281-63.111-64.76-33.89-129.52 80.986-149.071-65.72 11.185-139.6-7.295-159.875-79.748C9.945 203.659 0 75.291 0 57.946 0-28.906 76.135-1.612 123.121 33.664Z" fill="#0087FF"/>
+  </svg>
+)
+
 export default function LoginButton() {
   const [handle, setHandle] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -30,34 +36,28 @@ export default function LoginButton() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-sm">
-      <div className="mb-4">
-        <label
-          htmlFor="handle"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          Bluesky Handle
-        </label>
+    <form onSubmit={handleSubmit} className="w-full max-w-sm mx-auto">
+      <div className="mb-2">
         <input
           type="text"
           id="handle"
           value={handle}
           onChange={(e) => setHandle(e.target.value)}
-          placeholder="yourname.bsky.social"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          placeholder="you.bsky.social"
+          className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white text-center placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           disabled={isLoading}
         />
       </div>
 
-      {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
-
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="w-full bg-white text-black py-2 px-4 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
       >
-        {isLoading ? 'Connecting...' : 'Sign in with Bluesky'}
+        {isLoading ? 'Connecting...' : <><BlueskyIcon /> Sign in with Bluesky</>}
       </button>
+
+      {error && <p className="text-red-600 text-sm mt-4 text-center">{error}</p>}
     </form>
   )
 }
