@@ -84,7 +84,7 @@ export async function POST(request: Request) {
 
     if (!attestationId || !proof || !publicSignals) {
       return Response.json(
-        { success: false, error: 'Missing required fields' },
+        { status: 'error', result: false, reason: 'Missing required fields' },
         { status: 400 }
       )
     }
@@ -100,9 +100,9 @@ export async function POST(request: Request) {
     if (!result.isValidDetails.isValid) {
       return Response.json(
         {
-          success: false,
-          error: 'Verification failed',
-          details: result.isValidDetails,
+          status: 'error',
+          result: false,
+          reason: 'Verification failed',
         },
         { status: 400 }
       )
@@ -112,8 +112,9 @@ export async function POST(request: Request) {
     if (!result.isValidDetails.isMinimumAgeValid) {
       return Response.json(
         {
-          success: false,
-          error: 'Age requirement not met',
+          status: 'error',
+          result: false,
+          reason: 'Age requirement not met',
         },
         { status: 400 }
       )
@@ -127,7 +128,7 @@ export async function POST(request: Request) {
     }
 
     // Return success - Self SDK will trigger the frontend onSuccess callback
-    return Response.json({ success: true })
+    return Response.json({ status: 'success', result: true })
   } catch (error) {
     console.error('Verification error:', error)
 
@@ -143,8 +144,9 @@ export async function POST(request: Request) {
 
     return Response.json(
       {
-        success: false,
-        error: userMessage,
+        status: 'error',
+        result: false,
+        reason: userMessage,
       },
       { status: 400 }
     )
