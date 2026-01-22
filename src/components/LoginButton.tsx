@@ -62,7 +62,16 @@ export default function LoginButton() {
         {isLoading ? 'Connecting...' : <><BlueskyIcon /> Sign in with Bluesky</>}
       </button>
 
-      {error && <p className="text-red-600 text-sm mt-4 text-center">{error}</p>}
+      {error && (
+        <p className="text-white text-sm mt-4 text-center flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          {error}
+        </p>
+      )}
     </form>
   )
 }
