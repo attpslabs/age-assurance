@@ -1,0 +1,230 @@
+import {
+  SelfBackendVerifier,
+  DefaultConfigStore,
+  AllIds,
+} from '@selfxyz/core'
+import type { BigNumberish } from 'ethers'
+
+// Initialize the Self Protocol verifier with proper configuration
+const configStore = new DefaultConfigStore({
+  minimumAge: 18,
+  excludedCountries: [],
+  ofac: false,
+})
+
+const selfVerifier = new SelfBackendVerifier(
+  'attps-age-assurance', // scope (must match frontend QR config)
+  'https://attps.social/api/assure', // endpoint (updated in prod)
+  true, // mockPassport - true for testnet/dev, false for mainnet
+  AllIds, // allowed attestation types (passport, ID card, etc.)
+  configStore, // verification config
+  'uuid' // user identifier type
+)
+
+// In-memory store for verified users (in production, use KV or Durable Objects)
+// Maps DID -> { verifiedAt: timestamp, used: boolean }
+const verifiedUsers = new Map<string, { verifiedAt: number; used: boolean }>()
+
+// Clean up old entries (older than 5 minutes)
+function cleanupVerifiedUsers() {
+  const fiveMinutesAgo = Date.now() - 5 * 60 * 1000
+  for (const [did, data] of verifiedUsers.entries()) {
+    if (data.verifiedAt < fiveMinutesAgo) {
+      verifiedUsers.delete(did)
+    }
+  }
+}
+
+// Type for the proof payload from Self
+interface SelfProofPayload {
+  attestationId: 1 | 2 | 3
+  proof: {
+    a: [BigNumberish, BigNumberish]
+    b: [[BigNumberish, BigNumberish], [BigNumberish, BigNumberish]]
+    c: [BigNumberish, BigNumberish]
+  }
+  publicSignals: BigNumberish[]
+  userContextData?: string // Contains the user's DID
+}
+
+// Sign the attestation payload using Ed25519
+async function signAttestation(
+  payload: object,
+  privateKeyBase64: string
+): Promise<string> {
+  // Import the raw Ed25519 private key
+  const privateKeyBytes = Uint8Array.from(atob(privateKeyBase64), (c) =>
+    c.charCodeAt(0)
+  )
+
+  // Ed25519 raw private key is 32 bytes, we need to create a CryptoKey
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw',
+    privateKeyBytes,
+    { name: 'Ed25519' },
+    false,
+    ['sign']
+  )
+
+  // Create canonical JSON of the payload
+  const payloadBytes = new TextEncoder().encode(JSON.stringify(payload))
+
+  // Sign the payload
+  const signature = await crypto.subtle.sign('Ed25519', cryptoKey, payloadBytes)
+
+  // Return base64-encoded signature
+  return btoa(String.fromCharCode(...new Uint8Array(signature)))
+}
+
+// POST: Self relayers call this with the proof
+export async function POST(request: Request) {
+  try {
+    const body = (await request.json()) as SelfProofPayload
+    const { attestationId, proof, publicSignals, userContextData } = body
+
+    if (!attestationId || !proof || !publicSignals) {
+      return Response.json(
+        { success: false, error: 'Missing required fields' },
+        { status: 400 }
+      )
+    }
+
+    // Verify the zk-proof
+    const result = await selfVerifier.verify(
+      attestationId,
+      proof,
+      publicSignals,
+      userContextData || ''
+    )
+
+    if (!result.isValidDetails.isValid) {
+      return Response.json(
+        {
+          success: false,
+          error: 'Verification failed',
+          details: result.isValidDetails,
+        },
+        { status: 400 }
+      )
+    }
+
+    // Check age requirement specifically
+    if (!result.isValidDetails.isMinimumAgeValid) {
+      return Response.json(
+        {
+          success: false,
+          error: 'Age requirement not met',
+        },
+        { status: 400 }
+      )
+    }
+
+    // Store verification result for this user
+    // userContextData contains the user's DID
+    if (userContextData) {
+      cleanupVerifiedUsers()
+      verifiedUsers.set(userContextData, { verifiedAt: Date.now(), used: false })
+    }
+
+    // Return success - Self SDK will trigger the frontend onSuccess callback
+    return Response.json({ success: true })
+  } catch (error) {
+    console.error('Verification error:', error)
+    return Response.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    )
+  }
+}
+
+// GET: Frontend calls this after onSuccess to get the signed attestation
+export async function GET(request: Request) {
+  try {
+    const url = new URL(request.url)
+    const did = url.searchParams.get('did')
+
+    if (!did) {
+      return Response.json(
+        { success: false, error: 'Missing DID parameter' },
+        { status: 400 }
+      )
+    }
+
+    // Check if this user was recently verified
+    const verification = verifiedUsers.get(did)
+    if (!verification) {
+      return Response.json(
+        { success: false, error: 'No verification found for this DID' },
+        { status: 404 }
+      )
+    }
+
+    // Check if verification is still fresh (within 5 minutes)
+    if (Date.now() - verification.verifiedAt > 5 * 60 * 1000) {
+      verifiedUsers.delete(did)
+      return Response.json(
+        { success: false, error: 'Verification expired' },
+        { status: 410 }
+      )
+    }
+
+    // Check if already used
+    if (verification.used) {
+      return Response.json(
+        { success: false, error: 'Verification already used' },
+        { status: 409 }
+      )
+    }
+
+    // Mark as used
+    verification.used = true
+
+    // Get the private key from environment
+    // In Cloudflare Workers, this comes from wrangler secret
+    const privateKey = (
+      process.env as unknown as { ATTESTATION_PRIVATE_KEY?: string }
+    ).ATTESTATION_PRIVATE_KEY
+
+    if (!privateKey) {
+      console.error('ATTESTATION_PRIVATE_KEY not configured')
+      return Response.json(
+        { success: false, error: 'Server configuration error' },
+        { status: 500 }
+      )
+    }
+
+    // Create the attestation payload (what gets signed)
+    const assuredAt = new Date().toISOString()
+    const payload = {
+      subject: did,
+      ageAtLeast18: true,
+      assuredAt,
+      assurer: 'did:plc:uh7zr6mlwxneec773o5dkcrl', // @attps.social
+    }
+
+    // Sign the payload
+    const sig = await signAttestation(payload, privateKey)
+
+    // Return the signed attestation
+    return Response.json({
+      success: true,
+      attestation: {
+        ...payload,
+        sig,
+        sigKey: 'attps-age-v1',
+      },
+    })
+  } catch (error) {
+    console.error('Attestation signing error:', error)
+    return Response.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    )
+  }
+}

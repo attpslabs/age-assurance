@@ -12,7 +12,11 @@
 		"publish": true
 	},
 	"dependencies": {
+		"@atproto/api": "^0.18.16",
+		"@atproto/oauth-client-browser": "^0.3.39",
 		"@opennextjs/cloudflare": "1.14.0",
+		"@selfxyz/core": "^1.1.0-beta.7",
+		"@selfxyz/qrcode": "^1.0.17",
 		"next": "16.0.7",
 		"react": "19.2.1",
 		"react-dom": "19.2.1"

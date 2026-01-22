@@ -1,0 +1,15 @@
+{
+  "client_id": "https://attps.social/client-metadata.json",
+  "client_name": "ATTPS Age Assurance",
+  "client_uri": "https://attps.social",
+  "logo_uri": "https://attps.social/logo.png",
+  "tos_uri": "https://attps.social/tos",
+  "policy_uri": "https://attps.social/privacy",
+  "redirect_uris": ["https://attps.social/callback"],
+  "scope": "atproto transition:generic",
+  "grant_types": ["authorization_code", "refresh_token"],
+  "response_types": ["code"],
+  "token_endpoint_auth_method": "none",
+  "application_type": "web",
+  "dpop_bound_access_tokens": true
+}
