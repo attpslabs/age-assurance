@@ -30,7 +30,12 @@ export default function Home() {
           handle: restored.handle,
           pdsUrl: restored.pdsUrl,
         })
-        router.push('/assure')
+        // Check OAuth state for return path (playground vs main)
+        if (restored.state?.startsWith('/playground')) {
+          router.push('/playground/assure')
+        } else {
+          router.push('/assure')
+        }
         return
       }
 

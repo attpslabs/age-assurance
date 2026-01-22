@@ -57,10 +57,11 @@ export async function getOAuthClient(): Promise<BrowserOAuthClient> {
   return oauthClient
 }
 
-export async function signIn(handle: string): Promise<void> {
+export async function signIn(handle: string, state?: string): Promise<void> {
   const client = await getOAuthClient()
   await client.signIn(handle, {
     signal: new AbortController().signal,
+    state: state,
   })
 }
 
@@ -103,6 +104,7 @@ export async function restoreSession(): Promise<{
   handle: string
   pdsUrl: string
   agent: Agent
+  state?: string
 } | null> {
   try {
     const client = await getOAuthClient()
@@ -125,6 +127,7 @@ export async function restoreSession(): Promise<{
         handle,
         pdsUrl,
         agent,
+        state: result.state,
       }
     }
 

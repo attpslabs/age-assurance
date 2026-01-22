@@ -26,7 +26,8 @@ export default function LoginButton() {
     setError(null)
 
     try {
-      await signIn(handle.trim())
+      // Pass current path as state to preserve across OAuth redirect
+      await signIn(handle.trim(), window.location.pathname)
       // signIn will redirect to Bluesky for auth
     } catch (err) {
       console.error('Sign in error:', err)
