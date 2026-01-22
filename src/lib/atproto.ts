@@ -127,7 +127,7 @@ export async function restoreSession(): Promise<{
         handle,
         pdsUrl,
         agent,
-        state: result.state,
+        state: result.state ?? undefined,
       }
     }
 
