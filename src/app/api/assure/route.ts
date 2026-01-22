@@ -130,12 +130,23 @@ export async function POST(request: Request) {
     return Response.json({ success: true })
   } catch (error) {
     console.error('Verification error:', error)
+
+    // Provide user-friendly error messages
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    let userMessage = 'Verification failed'
+
+    if (errorMessage.includes('InvalidMinimumAge')) {
+      userMessage = 'Age requirement not met. You must be 18 or older.'
+    } else if (errorMessage.includes('InvalidProof')) {
+      userMessage = 'Invalid proof. Please try scanning again.'
+    }
+
     return Response.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: userMessage,
       },
-      { status: 500 }
+      { status: 400 }
     )
   }
 }
