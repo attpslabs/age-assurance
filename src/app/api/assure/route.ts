@@ -4,6 +4,7 @@ import {
   AllIds,
 } from '@selfxyz/core'
 import type { BigNumberish } from 'ethers'
+import { getStore } from '@netlify/blobs'
 
 // Initialize the Self Protocol verifier with proper configuration
 const configStore = new DefaultConfigStore({
@@ -21,18 +22,10 @@ const selfVerifier = new SelfBackendVerifier(
   'uuid' // user identifier type
 )
 
-// In-memory store for verified users (in production, use KV or Durable Objects)
-// Maps DID -> { verifiedAt: timestamp, used: boolean }
-const verifiedUsers = new Map<string, { verifiedAt: number; used: boolean }>()
-
-// Clean up old entries (older than 5 minutes)
-function cleanupVerifiedUsers() {
-  const fiveMinutesAgo = Date.now() - 5 * 60 * 1000
-  for (const [did, data] of verifiedUsers.entries()) {
-    if (data.verifiedAt < fiveMinutesAgo) {
-      verifiedUsers.delete(did)
-    }
-  }
+// Verification data stored in Netlify Blobs
+interface VerificationData {
+  verifiedAt: number
+  used: boolean
 }
 
 // Type for the proof payload from Self
@@ -44,7 +37,7 @@ interface SelfProofPayload {
     c: [BigNumberish, BigNumberish]
   }
   publicSignals: BigNumberish[]
-  userContextData?: string // Contains the user's DID
+  userContextData?: string // Contains the user's UUID
 }
 
 // Sign the attestation payload using Ed25519
@@ -120,11 +113,13 @@ export async function POST(request: Request) {
       )
     }
 
-    // Store verification result for this user
-    // userContextData contains the user's DID
+    // Store verification result in Netlify Blobs (persists across function instances)
     if (userContextData) {
-      cleanupVerifiedUsers()
-      verifiedUsers.set(userContextData, { verifiedAt: Date.now(), used: false })
+      const store = getStore('verifications')
+      await store.setJSON(userContextData, {
+        verifiedAt: Date.now(),
+        used: false,
+      } as VerificationData)
     }
 
     // Return success - Self SDK will trigger the frontend onSuccess callback
@@ -167,8 +162,10 @@ export async function GET(request: Request) {
       )
     }
 
-    // Check if this user was recently verified (lookup by UUID, which is what Self SDK sends)
-    const verification = verifiedUsers.get(uuid)
+    // Check if this user was recently verified (lookup by UUID from Netlify Blobs)
+    const store = getStore('verifications')
+    const verification = await store.get(uuid, { type: 'json' }) as VerificationData | null
+
     if (!verification) {
       return Response.json(
         { success: false, error: 'No verification found for this user' },
@@ -178,7 +175,7 @@ export async function GET(request: Request) {
 
     // Check if verification is still fresh (within 5 minutes)
     if (Date.now() - verification.verifiedAt > 5 * 60 * 1000) {
-      verifiedUsers.delete(uuid)
+      await store.delete(uuid)
       return Response.json(
         { success: false, error: 'Verification expired' },
         { status: 410 }
@@ -194,13 +191,10 @@ export async function GET(request: Request) {
     }
 
     // Mark as used
-    verification.used = true
+    await store.setJSON(uuid, { ...verification, used: true } as VerificationData)
 
     // Get the private key from environment
-    // In Cloudflare Workers, this comes from wrangler secret
-    const privateKey = (
-      process.env as unknown as { ATTESTATION_PRIVATE_KEY?: string }
-    ).ATTESTATION_PRIVATE_KEY
+    const privateKey = process.env.ATTESTATION_PRIVATE_KEY
 
     if (!privateKey) {
       console.error('ATTESTATION_PRIVATE_KEY not configured')
