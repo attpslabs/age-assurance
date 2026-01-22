@@ -4,7 +4,7 @@ import {
   AllIds,
 } from '@selfxyz/core'
 import type { BigNumberish } from 'ethers'
-import { getStore } from '@netlify/blobs'
+import { getCloudflareContext } from '@opennextjs/cloudflare'
 
 // Initialize the Self Protocol verifier with proper configuration
 const configStore = new DefaultConfigStore({
@@ -113,18 +113,21 @@ export async function POST(request: Request) {
       )
     }
 
-    // Store verification result in Netlify Blobs (persists across function instances)
+    // Store verification result in Cloudflare KV (persists across function instances)
     if (userContextData) {
       try {
         console.log('Storing verification for UUID:', userContextData)
-        const store = getStore('verifications')
-        await store.setJSON(userContextData, {
+        const { env } = await getCloudflareContext({ async: true })
+        const kv = env.VERIFICATIONS
+        await kv.put(userContextData, JSON.stringify({
           verifiedAt: Date.now(),
           used: false,
-        } as VerificationData)
+        } as VerificationData), {
+          expirationTtl: 300, // 5 minutes TTL
+        })
         console.log('Successfully stored verification')
-      } catch (blobError) {
-        console.error('Failed to store verification in Netlify Blobs:', blobError)
+      } catch (kvError) {
+        console.error('Failed to store verification in Cloudflare KV:', kvError)
         // Continue anyway - the proof was verified successfully
       }
     }
@@ -169,16 +172,18 @@ export async function GET(request: Request) {
       )
     }
 
-    // Check if this user was recently verified (lookup by UUID from Netlify Blobs)
+    // Check if this user was recently verified (lookup by UUID from Cloudflare KV)
     let verification: VerificationData | null = null
-    let store: ReturnType<typeof getStore>
+    let kv: KVNamespace
     try {
       console.log('Looking up verification for UUID:', uuid)
-      store = getStore('verifications')
-      verification = await store.get(uuid, { type: 'json' }) as VerificationData | null
+      const { env } = await getCloudflareContext({ async: true })
+      kv = env.VERIFICATIONS
+      const stored = await kv.get(uuid)
+      verification = stored ? JSON.parse(stored) as VerificationData : null
       console.log('Verification lookup result:', verification)
-    } catch (blobError) {
-      console.error('Failed to read from Netlify Blobs:', blobError)
+    } catch (kvError) {
+      console.error('Failed to read from Cloudflare KV:', kvError)
       return Response.json(
         { success: false, error: 'Storage error - please try again' },
         { status: 500 }
@@ -193,8 +198,9 @@ export async function GET(request: Request) {
     }
 
     // Check if verification is still fresh (within 5 minutes)
+    // Note: KV has its own TTL but we double-check here
     if (Date.now() - verification.verifiedAt > 5 * 60 * 1000) {
-      await store.delete(uuid)
+      await kv.delete(uuid)
       return Response.json(
         { success: false, error: 'Verification expired' },
         { status: 410 }
@@ -210,7 +216,9 @@ export async function GET(request: Request) {
     }
 
     // Mark as used
-    await store.setJSON(uuid, { ...verification, used: true } as VerificationData)
+    await kv.put(uuid, JSON.stringify({ ...verification, used: true } as VerificationData), {
+      expirationTtl: 60, // Keep for 1 more minute then auto-delete
+    })
 
     // Get the private key from environment
     const privateKey = process.env.ATTESTATION_PRIVATE_KEY

@@ -14,7 +14,6 @@
 	"dependencies": {
 		"@atproto/api": "^0.18.16",
 		"@atproto/oauth-client-browser": "^0.3.39",
-		"@netlify/blobs": "^10.5.0",
 		"@opennextjs/cloudflare": "1.14.0",
 		"@selfxyz/core": "^1.1.0-beta.7",
 		"@selfxyz/qrcode": "^1.0.17",
