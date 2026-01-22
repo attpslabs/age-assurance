@@ -24,8 +24,12 @@ export default function CallbackPage() {
             pdsUrl: result.pdsUrl,
           })
 
-          // Redirect to assurance page
-          router.push('/assure')
+          // Redirect based on where the user came from (stored in OAuth state)
+          if (result.state?.startsWith('/playground')) {
+            router.push('/playground/assure')
+          } else {
+            router.push('/assure')
+          }
         } else {
           // No OAuth session, redirect to home
           router.push('/')
