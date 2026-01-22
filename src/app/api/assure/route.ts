@@ -5,6 +5,7 @@ import {
 } from '@selfxyz/core'
 import type { BigNumberish } from 'ethers'
 import { getStore } from '@netlify/blobs'
+import * as ed25519 from '@noble/ed25519'
 
 // Initialize the Self Protocol verifier with proper configuration
 const configStore = new DefaultConfigStore({
@@ -40,33 +41,24 @@ interface SelfProofPayload {
   userContextData?: string // Contains the user's UUID
 }
 
-// Sign the attestation payload using Ed25519
+// Sign the attestation payload using Ed25519 (using @noble/ed25519 for compatibility)
 async function signAttestation(
   payload: object,
   privateKeyBase64: string
 ): Promise<string> {
-  // Import the raw Ed25519 private key
+  // Decode the base64 private key
   const privateKeyBytes = Uint8Array.from(atob(privateKeyBase64), (c) =>
     c.charCodeAt(0)
-  )
-
-  // Ed25519 raw private key is 32 bytes, we need to create a CryptoKey
-  const cryptoKey = await crypto.subtle.importKey(
-    'raw',
-    privateKeyBytes,
-    { name: 'Ed25519' },
-    false,
-    ['sign']
   )
 
   // Create canonical JSON of the payload
   const payloadBytes = new TextEncoder().encode(JSON.stringify(payload))
 
-  // Sign the payload
-  const signature = await crypto.subtle.sign('Ed25519', cryptoKey, payloadBytes)
+  // Sign using noble/ed25519 (works in all environments)
+  const signature = await ed25519.signAsync(payloadBytes, privateKeyBytes)
 
   // Return base64-encoded signature
-  return btoa(String.fromCharCode(...new Uint8Array(signature)))
+  return btoa(String.fromCharCode(...signature))
 }
 
 // POST: Self relayers call this with the proof
