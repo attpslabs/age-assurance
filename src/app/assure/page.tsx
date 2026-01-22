@@ -7,6 +7,7 @@ import { signOut, restoreSession } from '@/lib/atproto'
 import { SelfQRcodeWrapper, SelfAppBuilder } from '@selfxyz/qrcode'
 import { logo } from '@/lib/logo'
 import { v5 as uuidv5 } from 'uuid'
+import { SphereMask } from '@/components/magicui/sphere-mask'
 
 const StarIcon = () => (
   <svg width="40" height="40" viewBox="0 0 150 148" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -188,24 +189,35 @@ export default function AssurePage() {
 
   return (
     <>
-      {/* Star icon header */}
-      <header className="w-full py-6 sticky top-0 z-40 bg-black">
+      {/* Sunrise gradient background - same as homepage */}
+      <div
+        className="absolute inset-x-0 top-0 h-[420px] -z-10"
+        style={{
+          background: 'linear-gradient(to bottom, #16213e 0%, #2d3561 15%, #4a3f6b 30%, #6d5578 45%, #9d6b7a 65%, #e8a87c 100%)'
+        }}
+      />
+      {/* Simple star header */}
+      <header className="w-full py-6 sticky top-0 z-50">
         <div className="flex justify-center">
-          <a href="/" className="text-orange-500 hover:text-orange-400 transition-colors">
+          <a href="/" className="text-white hover:text-white/80 transition-colors">
             <StarIcon />
           </a>
         </div>
       </header>
-      <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-black">
+      <SphereMask />
+
+      {/* Hero Section with title */}
+      <section className="text-center px-8 -mt-64 relative z-10">
+        <h1 className="text-5xl md:text-7xl text-white" style={{ fontFamily: 'var(--font-dm-serif-text)' }}>
+          Age Verification
+        </h1>
+        <p className="text-gray-300 mt-4">
+          Welcome, <span className="font-medium text-white">@{session.handle}</span>
+        </p>
+      </section>
+
+      <div className="flex flex-col items-center p-8 pt-16">
         <main className="flex flex-col items-center gap-8 max-w-md w-full">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl text-white mb-4" style={{ fontFamily: 'var(--font-dm-serif-text)' }}>
-              Age Verification
-            </h1>
-            <p className="text-gray-400">
-              Welcome, <span className="font-medium text-white">@{session.handle}</span>
-            </p>
-          </div>
 
           <div className="w-full bg-gray-900 rounded-xl shadow-lg p-6 border border-gray-800">
             {status === 'consent' && (
