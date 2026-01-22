@@ -85,7 +85,9 @@ export default function AssurePage() {
     setStatus('fetching')
 
     try {
-      const response = await fetch(`/api/assure?did=${encodeURIComponent(session.did)}`)
+      // Generate the same UUID that was used for Self SDK
+      const userUuid = uuidv5(session.did, DID_NAMESPACE)
+      const response = await fetch(`/api/assure?did=${encodeURIComponent(session.did)}&uuid=${encodeURIComponent(userUuid)}`)
       const data: AttestationResponse = await response.json()
 
       if (!response.ok || !data.success) {

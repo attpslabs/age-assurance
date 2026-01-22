@@ -158,26 +158,27 @@ export async function GET(request: Request) {
   try {
     const url = new URL(request.url)
     const did = url.searchParams.get('did')
+    const uuid = url.searchParams.get('uuid')
 
-    if (!did) {
+    if (!did || !uuid) {
       return Response.json(
-        { success: false, error: 'Missing DID parameter' },
+        { success: false, error: 'Missing DID or UUID parameter' },
         { status: 400 }
       )
     }
 
-    // Check if this user was recently verified
-    const verification = verifiedUsers.get(did)
+    // Check if this user was recently verified (lookup by UUID, which is what Self SDK sends)
+    const verification = verifiedUsers.get(uuid)
     if (!verification) {
       return Response.json(
-        { success: false, error: 'No verification found for this DID' },
+        { success: false, error: 'No verification found for this user' },
         { status: 404 }
       )
     }
 
     // Check if verification is still fresh (within 5 minutes)
     if (Date.now() - verification.verifiedAt > 5 * 60 * 1000) {
-      verifiedUsers.delete(did)
+      verifiedUsers.delete(uuid)
       return Response.json(
         { success: false, error: 'Verification expired' },
         { status: 410 }
