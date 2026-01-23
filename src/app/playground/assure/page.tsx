@@ -203,14 +203,11 @@ export default function PlaygroundAssurePage() {
                 <h2 className="text-lg font-semibold text-white mb-4 text-center">
                   Test Attestation
                 </h2>
-                <div className="bg-yellow-500/10 border border-orange-500/30 rounded-lg p-3 mb-4">
+                <div className="bg-yellow-500/10 rounded-lg p-3 mb-4">
                   <p className="text-yellow-500 text-sm text-center">
                     This is a test flow using mock passports. The attestation will be written to a test collection.
                   </p>
                 </div>
-                <p className="text-sm text-gray-400 mb-6 text-center">
-                  Select what you would like to prove. This will be written to a test collection on your account.
-                </p>
                 <label className="flex items-start gap-3 p-4 rounded-lg cursor-pointer hover:bg-gray-800 mb-6">
                   <input
                     type="checkbox"
