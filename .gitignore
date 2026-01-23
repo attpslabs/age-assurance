@@ -200,3 +200,6 @@ next-env.d.ts
 
 ### Project docs ###
 docs/
+
+### IDE ###
+.vscode/
