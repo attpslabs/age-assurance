@@ -21,7 +21,7 @@
 		"paths": {
 			"@/*": ["./src/*"]
 		},
-		"types": ["./env.d.ts", "node"]
+		"types": ["node"]
 	},
 	"include": [
 		"next-env.d.ts",
