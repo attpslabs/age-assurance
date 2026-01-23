@@ -184,17 +184,19 @@ export default function PlaygroundAssurePage() {
   return (
     <>
       <AppHeader variant="dark" />
-      <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-black">
-        <main className="flex flex-col items-center gap-8 max-w-md w-full">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-white mb-2">
-              Test Verification
-            </h1>
-            <p className="text-gray-400">
-              Welcome, <span className="font-medium text-white">@{session.handle}</span>
-            </p>
-          </div>
 
+      {/* Hero Section with title - positioned same as /assure and /attestations */}
+      <section className="text-center px-8 pt-48 relative z-10">
+        <h1 className="text-5xl md:text-7xl text-white" style={{ fontFamily: 'var(--font-dm-serif-text)' }}>
+          Test Playground
+        </h1>
+        <p className="text-gray-300 mt-4">
+          Welcome, <span className="font-medium text-white">@{session.handle}</span>
+        </p>
+      </section>
+
+      <div className="flex flex-col items-center p-8 pt-16 bg-black min-h-screen">
+        <main className="flex flex-col items-center gap-8 max-w-md w-full">
           <div className="w-full bg-gray-900 rounded-xl shadow-lg p-6 border border-gray-800">
             {status === 'consent' && (
               <>
