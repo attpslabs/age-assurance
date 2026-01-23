@@ -33,8 +33,8 @@ export function AppHeader({ variant = 'light' }: AppHeaderProps) {
   }
 
   const navs = [
-    { line1: "Manage", line2: "Attestations", href: "/attestations" },
-    { line1: "Test", line2: "Playground", href: "/playground/assure" },
+    { name: "Manage Attestations", href: "/attestations" },
+    { name: "Test Playground", href: "/playground/assure" },
   ]
 
   const starColorClass = variant === 'dark'
@@ -56,15 +56,12 @@ export function AppHeader({ variant = 'light' }: AppHeaderProps) {
           ref={ref}
         >
           {navs.map((item, index) => (
-            <React.Fragment key={item.line1}>
+            <React.Fragment key={item.name}>
               <li
                 onMouseEnter={handleMouseEnter}
-                className="hover:text-primary text-primary/60 z-10 block cursor-pointer px-4 py-1.5 text-xs font-medium tracking-tight transition-colors duration-200 w-24 text-center"
+                className="hover:text-primary text-primary/60 z-10 block cursor-pointer px-4 py-2 text-sm font-medium tracking-tight transition-colors duration-200 w-24 text-center"
               >
-                <Link href={item.href} className="flex flex-col leading-tight">
-                  <span>{item.line1}</span>
-                  <span>{item.line2}</span>
-                </Link>
+                <Link href={item.href}>{item.name}</Link>
               </li>
               {index === 0 && <li className="w-14" />}
             </React.Fragment>
