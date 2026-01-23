@@ -4,7 +4,7 @@
  * Run with: npx tsx scripts/generate-keypair.ts
  *
  * This will output:
- * 1. The private key (base64) - store as Cloudflare secret: wrangler secret put ATTESTATION_PRIVATE_KEY
+ * 1. The private key (base64) - store as Netlify environment variable: ATTESTATION_PRIVATE_KEY
  * 2. The public key (base64) - add to /.well-known/attestation-keys.json
  */
 
@@ -24,9 +24,9 @@ const publicKeyRaw = publicKeyBytes.slice(-32)
 
 console.log('=== ATTPS Attestation Signing Keypair ===\n')
 
-console.log('PRIVATE KEY (base64) - Store as Cloudflare secret:')
-console.log(`  wrangler secret put ATTESTATION_PRIVATE_KEY`)
-console.log(`  Then paste: ${privateKeyRaw.toString('base64')}\n`)
+console.log('PRIVATE KEY (base64) - Store as Netlify environment variable:')
+console.log(`  Site Settings > Environment Variables > Add: ATTESTATION_PRIVATE_KEY`)
+console.log(`  Value: ${privateKeyRaw.toString('base64')}\n`)
 
 console.log('PUBLIC KEY (base64) - Add to well-known endpoint:')
 console.log(`  ${publicKeyRaw.toString('base64')}\n`)

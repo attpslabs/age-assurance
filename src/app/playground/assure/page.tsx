@@ -417,6 +417,54 @@ export default function PlaygroundAssurePage() {
             )}
           </div>
 
+          <div className="w-full bg-gray-900/50 rounded-xl p-6 border border-gray-800">
+            <h2 className="text-white font-semibold mb-3">How it works</h2>
+            <ol className="text-sm text-gray-400 space-y-2 list-decimal pl-5">
+              <li className="line-through text-gray-500">Sign in with your Bluesky account</li>
+              <li>
+                Open the Self app on your phone
+                <div className="mt-1">
+                  <span className="text-gray-500">Download for </span>
+                  <a
+                    href="https://apps.apple.com/us/app/self-zk/id6478563710"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-orange-500 hover:text-orange-400"
+                  >
+                    iOS
+                  </a>
+                  <span className="text-gray-500"> or </span>
+                  <a
+                    href="https://play.google.com/store/apps/details?id=com.proofofpassportapp&pli=1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-orange-500 hover:text-orange-400"
+                  >
+                    Android
+                  </a>
+                </div>
+              </li>
+              <li>
+                Use a mock passport to test the verification
+                <div className="mt-1">
+                  <span className="text-gray-500">Generate a </span>
+                  <a
+                    href="https://docs.self.xyz/use-self/using-mock-passports#generating-mock-passport"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-orange-500 hover:text-orange-400"
+                  >
+                    mock passport
+                  </a>
+                </div>
+              </li>
+              <li>See the attestation flow in action</li>
+            </ol>
+            <p className="text-xs text-gray-500 mt-4">
+              Test attestations are written to a separate collection and are not valid verifications.
+            </p>
+          </div>
+
           <div className="flex items-center gap-4">
             <Link
               href="/"
