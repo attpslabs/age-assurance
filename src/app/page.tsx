@@ -81,13 +81,13 @@ export default function Home() {
       <div className="flex flex-col items-center p-8 pt-32">
         <main className="flex flex-col items-center gap-8 max-w-md w-full">
 
-        <div className="w-full bg-gray-900/50 rounded-xl p-6 border border-gray-800">
+        <div className="w-full rounded-xl p-6" style={{ backgroundColor: '#1D1D1F' }}>
           <p className="text-sm text-gray-400 text-center">
             <a
               href="https://self.xyz"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-orange-500 underline"
+              className="text-orange-500"
             >
               Self
             </a>{' '}
@@ -100,7 +100,7 @@ export default function Home() {
               href="https://map.self.xyz"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-orange-500 underline"
+              className="text-orange-500"
             >
               Country coverage map
             </a>{' '}
@@ -113,7 +113,7 @@ export default function Home() {
             Your age verification is stored as an attestation in your AT Protocol
             repository. No personal data is shared.
           </p>
-          <p className="mt-2 font-mono text-xs text-gray-600">"ageAtLeast18": true</p>
+          <p className="mt-2 font-mono text-xs text-gray-500">"ageAtLeast18": true</p>
         </div>
       </main>
 
@@ -123,7 +123,7 @@ export default function Home() {
           <p className="text-center">
             <a
               href="/playground"
-              className="text-orange-500 hover:text-orange-400 text-sm font-medium"
+              className="text-orange-500 hover:text-orange-500 text-sm font-medium"
             >
               Try it first in the Playground →
             </a>

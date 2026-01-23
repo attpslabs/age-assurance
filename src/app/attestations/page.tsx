@@ -179,7 +179,7 @@ export default function AttestationsPage() {
         <h1 className="text-5xl md:text-7xl text-white" style={{ fontFamily: 'var(--font-dm-serif-text)' }}>
           Attestations
         </h1>
-        <p className="text-gray-300 mt-4">
+        <p className="mt-4" style={{ color: '#F5F5F7' }}>
           Welcome, <span className="font-medium text-white">@{session.handle}</span>
         </p>
       </section>
@@ -187,14 +187,14 @@ export default function AttestationsPage() {
       <div className="flex flex-col items-center p-8 pt-16">
         <main className="flex flex-col items-center gap-8 max-w-lg w-full">
 
-          <div className="w-full bg-gray-900 rounded-xl shadow-lg p-6 border border-gray-800">
+          <div className="w-full rounded-xl shadow-lg p-6" style={{ backgroundColor: '#1D1D1F' }}>
             <h2 className="text-lg font-semibold text-white mb-4 text-center">
               Your Attestations
             </h2>
 
             {error && (
               <div className="mb-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg text-white text-sm flex items-center gap-2">
-                <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 {error}
@@ -221,7 +221,7 @@ export default function AttestationsPage() {
                 <p className="text-gray-400 mb-4">No attestations found</p>
                 <Link
                   href="/assure"
-                  className="text-orange-500 hover:text-orange-400 font-medium"
+                  className="text-orange-500 hover:text-orange-500 font-medium"
                 >
                   Create an attestation
                 </Link>
@@ -231,16 +231,16 @@ export default function AttestationsPage() {
                 {attestations.map((attestation) => (
                   <div
                     key={attestation.uri}
-                    className="border border-gray-700 rounded-lg p-4 hover:bg-gray-800/50 transition-colors"
+                    className="rounded-lg p-4 hover:bg-gray-800/50 transition-colors"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-3">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-500/20 text-orange-400">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-500/20 text-orange-500">
                             {attestation.value.ageAtLeast18 ? '18+' : 'Under 18'}
                           </span>
                           {attestation.isTest && (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-400">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-500">
                               Test
                             </span>
                           )}
@@ -311,7 +311,7 @@ export default function AttestationsPage() {
                       <button
                         onClick={() => handleDelete(attestation.rkey)}
                         disabled={isDeleting === attestation.rkey}
-                        className="flex-shrink-0 p-2 text-red-400 hover:bg-red-500/20 rounded-lg transition-colors disabled:opacity-50"
+                        className="flex-shrink-0 p-2 text-red-500 hover:bg-red-500/20 rounded-lg transition-colors disabled:opacity-50"
                         title="Delete attestation"
                       >
                         {isDeleting === attestation.rkey ? (
@@ -342,11 +342,11 @@ export default function AttestationsPage() {
           <div className="flex items-center gap-4">
             <Link
               href="/assure"
-              className="text-sm text-orange-500 hover:text-orange-400 font-medium"
+              className="text-sm text-orange-500 hover:text-orange-500 font-medium"
             >
               Add attestation
             </Link>
-            <span className="text-gray-600">|</span>
+            <span className="text-gray-500">|</span>
             <button
               onClick={handleSignOut}
               className="text-sm text-gray-500 hover:text-gray-400 underline"

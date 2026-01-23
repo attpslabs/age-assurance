@@ -190,14 +190,14 @@ export default function PlaygroundAssurePage() {
         <h1 className="text-5xl md:text-7xl text-white" style={{ fontFamily: 'var(--font-dm-serif-text)' }}>
           Test Playground
         </h1>
-        <p className="text-gray-300 mt-4">
+        <p className="mt-4" style={{ color: '#F5F5F7' }}>
           Welcome, <span className="font-medium text-white">@{session.handle}</span>
         </p>
       </section>
 
       <div className="flex flex-col items-center p-8 pt-16 bg-black min-h-screen">
         <main className="flex flex-col items-center gap-8 max-w-md w-full">
-          <div className="w-full bg-gray-900 rounded-xl shadow-lg p-6 border border-gray-800">
+          <div className="w-full rounded-xl shadow-lg p-6" style={{ backgroundColor: '#1D1D1F' }}>
             {status === 'consent' && (
               <>
                 <h2 className="text-lg font-semibold text-white mb-4 text-center">
@@ -211,7 +211,7 @@ export default function PlaygroundAssurePage() {
                 <p className="text-sm text-gray-400 mb-6 text-center">
                   Select what you would like to prove. This will be written to a test collection on your account.
                 </p>
-                <label className="flex items-start gap-3 p-4 border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800 mb-6">
+                <label className="flex items-start gap-3 p-4 rounded-lg cursor-pointer hover:bg-gray-800 mb-6">
                   <input
                     type="checkbox"
                     checked={consentChecked}
@@ -266,7 +266,7 @@ export default function PlaygroundAssurePage() {
                     href="https://docs.self.xyz/use-self/using-mock-passports#generating-mock-passport"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-orange-500 hover:text-orange-400"
+                    className="text-orange-500 hover:text-orange-500"
                   >
                     mock passport
                   </a>{' '}
@@ -403,7 +403,7 @@ export default function PlaygroundAssurePage() {
                     />
                   </svg>
                 </div>
-                <h2 className="text-xl font-semibold text-red-400 mb-2">
+                <h2 className="text-xl font-semibold text-red-500 mb-2">
                   Test Failed
                 </h2>
                 <p className="text-gray-400 mb-4">{error}</p>
@@ -417,7 +417,7 @@ export default function PlaygroundAssurePage() {
             )}
           </div>
 
-          <div className="w-full bg-gray-900/50 rounded-xl p-6 border border-gray-800">
+          <div className="w-full rounded-xl p-6" style={{ backgroundColor: '#1D1D1F' }}>
             <h2 className="text-white font-semibold mb-3">How it works</h2>
             <ol className="text-sm text-gray-400 space-y-2 list-decimal pl-5">
               <li className="line-through text-gray-500">Sign in with your Bluesky account</li>
@@ -429,7 +429,7 @@ export default function PlaygroundAssurePage() {
                     href="https://apps.apple.com/us/app/self-zk/id6478563710"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-orange-500 hover:text-orange-400"
+                    className="text-orange-500 hover:text-orange-500"
                   >
                     iOS
                   </a>
@@ -438,7 +438,7 @@ export default function PlaygroundAssurePage() {
                     href="https://play.google.com/store/apps/details?id=com.proofofpassportapp&pli=1"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-orange-500 hover:text-orange-400"
+                    className="text-orange-500 hover:text-orange-500"
                   >
                     Android
                   </a>
@@ -452,7 +452,7 @@ export default function PlaygroundAssurePage() {
                     href="https://docs.self.xyz/use-self/using-mock-passports#generating-mock-passport"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-orange-500 hover:text-orange-400"
+                    className="text-orange-500 hover:text-orange-500"
                   >
                     mock passport
                   </a>
@@ -468,11 +468,11 @@ export default function PlaygroundAssurePage() {
           <div className="flex items-center gap-4">
             <Link
               href="/"
-              className="text-sm text-orange-500 hover:text-orange-400 font-medium"
+              className="text-sm text-orange-500 hover:text-orange-500 font-medium"
             >
               Real verification
             </Link>
-            <span className="text-gray-600">|</span>
+            <span className="text-gray-500">|</span>
             <button
               onClick={handleSignOut}
               className="text-sm text-gray-500 hover:text-gray-400 underline"

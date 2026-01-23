@@ -200,7 +200,7 @@ export default function AssurePage() {
         <h1 className="text-5xl md:text-7xl text-white" style={{ fontFamily: 'var(--font-dm-serif-text)' }}>
           Age Verification
         </h1>
-        <p className="text-gray-300 mt-4">
+        <p className="mt-4" style={{ color: '#F5F5F7' }}>
           Welcome, <span className="font-medium text-white">@{session.handle}</span>
         </p>
       </section>
@@ -208,7 +208,7 @@ export default function AssurePage() {
       <div className="flex flex-col items-center p-8 pt-16">
         <main className="flex flex-col items-center gap-8 max-w-md w-full">
 
-          <div className="w-full bg-gray-900 rounded-xl shadow-lg p-6 border border-gray-800">
+          <div className="w-full rounded-xl shadow-lg p-6" style={{ backgroundColor: '#1D1D1F' }}>
             {status === 'consent' && (
               <>
                 <h2 className="text-lg font-semibold text-white mb-4 text-center">
@@ -218,7 +218,7 @@ export default function AssurePage() {
                   Select what you would like to prove and add to your AT Protocol
                   account. This information will be publicly visible.
                 </p>
-                <label className="flex items-start gap-3 p-4 border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800 mb-6">
+                <label className="flex items-start gap-3 p-4 rounded-lg cursor-pointer hover:bg-gray-800 mb-6">
                   <input
                     type="checkbox"
                     checked={consentChecked}
@@ -377,7 +377,7 @@ export default function AssurePage() {
                 </p>
                 <Link
                   href="/attestations"
-                  className="text-orange-500 hover:text-orange-400 font-medium text-sm"
+                  className="text-orange-500 hover:text-orange-500 font-medium text-sm"
                 >
                   View & manage your attestations
                 </Link>
@@ -423,11 +423,11 @@ export default function AssurePage() {
           <div className="flex items-center gap-4">
             <Link
               href="/attestations"
-              className="text-sm text-orange-500 hover:text-orange-400 font-medium"
+              className="text-sm text-orange-500 hover:text-orange-500 font-medium"
             >
               Manage attestations
             </Link>
-            <span className="text-gray-600">|</span>
+            <span className="text-gray-500">|</span>
             <button
               onClick={handleSignOut}
               className="text-sm text-gray-500 hover:text-gray-400 underline"

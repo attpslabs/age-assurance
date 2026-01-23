@@ -50,7 +50,7 @@ export default function CallbackPage() {
           <h1 className="text-2xl font-bold text-red-600 mb-4">
             Authentication Failed
           </h1>
-          <p className="text-gray-600 mb-4">{error}</p>
+          <p className="text-gray-500 mb-4">{error}</p>
           <a href="/" className="text-blue-600 hover:underline">
             Return to home
           </a>
@@ -63,7 +63,7 @@ export default function CallbackPage() {
     <div className="min-h-screen flex items-center justify-center">
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
-        <p className="text-gray-600">Completing authentication...</p>
+        <p className="text-gray-500">Completing authentication...</p>
       </div>
     </div>
   )

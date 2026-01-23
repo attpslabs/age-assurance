@@ -56,7 +56,7 @@ export default function PlaygroundHome() {
       {/* Star icon header - same position as main homepage */}
       <header className="w-full py-6 sticky top-0 z-40">
         <div className="flex justify-center">
-          <a href="/" className="text-orange-500 hover:text-orange-400 transition-colors">
+          <a href="/" className="text-orange-500 hover:text-orange-500 transition-colors">
             <StarIcon />
           </a>
         </div>
@@ -80,7 +80,7 @@ export default function PlaygroundHome() {
               <LoginButton />
             </div>
 
-            <div className="w-full bg-gray-900/50 rounded-xl p-6 border border-gray-800">
+            <div className="w-full rounded-xl p-6" style={{ backgroundColor: '#1D1D1F' }}>
               <h2 className="text-white font-semibold mb-3">How it works</h2>
               <ol className="text-sm text-gray-400 space-y-2 list-decimal pl-5">
                 <li>Sign in with your Bluesky account</li>
@@ -92,7 +92,7 @@ export default function PlaygroundHome() {
                       href="https://apps.apple.com/us/app/self-zk/id6478563710"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-orange-500 hover:text-orange-400"
+                      className="text-orange-500 hover:text-orange-500"
                     >
                       iOS
                     </a>
@@ -101,7 +101,7 @@ export default function PlaygroundHome() {
                       href="https://play.google.com/store/apps/details?id=com.proofofpassportapp&pli=1"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-orange-500 hover:text-orange-400"
+                      className="text-orange-500 hover:text-orange-500"
                     >
                       Android
                     </a>
@@ -115,7 +115,7 @@ export default function PlaygroundHome() {
                       href="https://docs.self.xyz/use-self/using-mock-passports#generating-mock-passport"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-orange-500 hover:text-orange-400"
+                      className="text-orange-500 hover:text-orange-500"
                     >
                       mock passport
                     </a>
@@ -131,7 +131,7 @@ export default function PlaygroundHome() {
             <div className="text-center">
               <a
                 href="/"
-                className="text-orange-500 hover:text-orange-400 text-sm font-medium"
+                className="text-orange-500 hover:text-orange-500 text-sm font-medium"
               >
                 Go to real verification →
               </a>

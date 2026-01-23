@@ -38,7 +38,7 @@ export function AppHeader({ variant = 'light' }: AppHeaderProps) {
   ]
 
   const starColorClass = variant === 'dark'
-    ? 'text-orange-500 hover:text-orange-400'
+    ? 'text-orange-500 hover:text-orange-500'
     : 'text-white hover:text-white/80'
 
   const headerBgClass = variant === 'dark' ? 'bg-black' : ''
