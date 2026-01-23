@@ -235,7 +235,7 @@ export default function AttestationsPage() {
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-2">
+                        <div className="flex items-center gap-2 mb-3">
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-500/20 text-orange-400">
                             {attestation.value.ageAtLeast18 ? '18+' : 'Under 18'}
                           </span>
@@ -244,28 +244,69 @@ export default function AttestationsPage() {
                               Test
                             </span>
                           )}
-                          <span className="text-xs text-gray-500">
-                            rkey: {attestation.rkey}
-                          </span>
                         </div>
-                        <p className="text-sm text-gray-400 mb-1">
-                          <span className="font-medium text-gray-300">Assured at:</span>{' '}
-                          {new Date(attestation.value.assuredAt).toLocaleString()}
-                        </p>
-                        <p className="text-sm text-gray-400 mb-1">
-                          <span className="font-medium text-gray-300">Assurer:</span>{' '}
-                          <span className="font-mono text-xs break-all">
-                            {attestation.value.assurer}
-                          </span>
-                        </p>
-                        {attestation.value.sig && (
-                          <p className="text-sm text-orange-400">
-                            <span className="font-medium">Signed:</span>{' '}
-                            <span className="text-xs">
-                              {attestation.value.sigKey || 'yes'}
-                            </span>
-                          </p>
-                        )}
+
+                        <div className="space-y-2 text-sm">
+                          <div>
+                            <span className="font-medium text-gray-300">Age at least 18:</span>{' '}
+                            <span className="text-gray-400">{attestation.value.ageAtLeast18 ? 'true' : 'false'}</span>
+                          </div>
+
+                          {attestation.value.subject && (
+                            <div>
+                              <span className="font-medium text-gray-300">Subject:</span>{' '}
+                              <span className="font-mono text-xs text-gray-400 break-all">{attestation.value.subject}</span>
+                            </div>
+                          )}
+
+                          <div>
+                            <span className="font-medium text-gray-300">Assured at:</span>{' '}
+                            <span className="text-gray-400">{new Date(attestation.value.assuredAt).toISOString().replace('T', ' ').replace('Z', ' UTC')}</span>
+                          </div>
+
+                          <div>
+                            <span className="font-medium text-gray-300">Assurer:</span>{' '}
+                            <span className="font-mono text-xs text-gray-400 break-all">{attestation.value.assurer}</span>
+                          </div>
+
+                          {attestation.value.sig && (
+                            <div>
+                              <span className="font-medium text-gray-300">Signature:</span>{' '}
+                              <span className="font-mono text-xs text-gray-400 break-all">{attestation.value.sig}</span>
+                            </div>
+                          )}
+
+                          {attestation.value.sigKey && (
+                            <div>
+                              <span className="font-medium text-gray-300">Signature key:</span>{' '}
+                              <span className="font-mono text-xs text-gray-400">{attestation.value.sigKey}</span>
+                            </div>
+                          )}
+
+                          <div>
+                            <span className="font-medium text-gray-300">$type:</span>{' '}
+                            <span className="font-mono text-xs text-gray-400">{attestation.value.$type}</span>
+                          </div>
+
+                          <div className="pt-2 border-t border-gray-700 mt-2">
+                            <div>
+                              <span className="font-medium text-gray-500">URI:</span>{' '}
+                              <span className="font-mono text-xs text-gray-500 break-all">{attestation.uri}</span>
+                            </div>
+                            <div>
+                              <span className="font-medium text-gray-500">CID:</span>{' '}
+                              <span className="font-mono text-xs text-gray-500 break-all">{attestation.cid}</span>
+                            </div>
+                            <div>
+                              <span className="font-medium text-gray-500">Collection:</span>{' '}
+                              <span className="font-mono text-xs text-gray-500">{attestation.collection}</span>
+                            </div>
+                            <div>
+                              <span className="font-medium text-gray-500">Record key:</span>{' '}
+                              <span className="font-mono text-xs text-gray-500">{attestation.rkey}</span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                       <button
                         onClick={() => handleDelete(attestation.rkey)}
