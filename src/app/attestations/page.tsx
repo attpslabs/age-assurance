@@ -13,6 +13,8 @@ interface AgeAttestation {
   uri: string
   cid: string
   rkey: string
+  collection: string
+  isTest: boolean
   value: {
     $type: string
     subject?: string
@@ -43,7 +45,7 @@ export default function AttestationsPage() {
     fetchAttestations(currentSession)
   }, [router])
 
-  // Fetch all attestations in the social.attps.assurance.age collection
+  // Fetch all attestations from both production and test collections
   const fetchAttestations = useCallback(async (currentSession: Session) => {
     setIsLoading(true)
     setError(null)
@@ -51,20 +53,45 @@ export default function AttestationsPage() {
     try {
       // Use unauthenticated agent for read-only listRecords (faster, no OAuth init needed)
       const agent = new AtpAgent({ service: currentSession.pdsUrl })
-      const response = await agent.com.atproto.repo.listRecords({
-        repo: currentSession.did,
-        collection: 'social.attps.ageassurance',
-        limit: 100,
-      })
 
-      const records = response.data.records.map((record) => ({
+      // Fetch both production and test attestations in parallel
+      const [prodResponse, testResponse] = await Promise.all([
+        agent.com.atproto.repo.listRecords({
+          repo: currentSession.did,
+          collection: 'social.attps.ageassurance',
+          limit: 100,
+        }),
+        agent.com.atproto.repo.listRecords({
+          repo: currentSession.did,
+          collection: 'social.attps.ageassurance.test',
+          limit: 100,
+        }),
+      ])
+
+      const prodRecords = prodResponse.data.records.map((record) => ({
         uri: record.uri,
         cid: record.cid,
         rkey: record.uri.split('/').pop() || '',
+        collection: 'social.attps.ageassurance',
+        isTest: false,
         value: record.value as AgeAttestation['value'],
       }))
 
-      setAttestations(records)
+      const testRecords = testResponse.data.records.map((record) => ({
+        uri: record.uri,
+        cid: record.cid,
+        rkey: record.uri.split('/').pop() || '',
+        collection: 'social.attps.ageassurance.test',
+        isTest: true,
+        value: record.value as AgeAttestation['value'],
+      }))
+
+      // Combine and sort by assuredAt (newest first)
+      const allRecords = [...prodRecords, ...testRecords].sort(
+        (a, b) => new Date(b.value.assuredAt).getTime() - new Date(a.value.assuredAt).getTime()
+      )
+
+      setAttestations(allRecords)
     } catch (err) {
       console.error('Failed to fetch attestations:', err)
       setError(
@@ -93,9 +120,15 @@ export default function AttestationsPage() {
         throw new Error('Could not restore session')
       }
 
+      // Find the attestation to get its collection
+      const attestation = attestations.find((a) => a.rkey === rkey)
+      if (!attestation) {
+        throw new Error('Attestation not found')
+      }
+
       await restored.agent.com.atproto.repo.deleteRecord({
         repo: session.did,
-        collection: 'social.attps.ageassurance',
+        collection: attestation.collection,
         rkey,
       })
 
@@ -206,6 +239,11 @@ export default function AttestationsPage() {
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-500/20 text-orange-400">
                             {attestation.value.ageAtLeast18 ? '18+' : 'Under 18'}
                           </span>
+                          {attestation.isTest && (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-400">
+                              Test
+                            </span>
+                          )}
                           <span className="text-xs text-gray-500">
                             rkey: {attestation.rkey}
                           </span>
