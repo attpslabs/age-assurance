@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { getSession, clearSession, Session } from '@/lib/session'
 import { signOut, restoreSession } from '@/lib/atproto'
+import { AtpAgent } from '@atproto/api'
 import { SphereMask } from '@/components/magicui/sphere-mask'
 import { AppHeader } from '@/components/AppHeader'
 import Link from 'next/link'
@@ -39,22 +40,19 @@ export default function AttestationsPage() {
       return
     }
     setSession(currentSession)
-    fetchAttestations(currentSession.did)
+    fetchAttestations(currentSession)
   }, [router])
 
   // Fetch all attestations in the social.attps.assurance.age collection
-  const fetchAttestations = useCallback(async (did: string) => {
+  const fetchAttestations = useCallback(async (currentSession: Session) => {
     setIsLoading(true)
     setError(null)
 
     try {
-      const restored = await restoreSession()
-      if (!restored?.agent) {
-        throw new Error('Could not restore session')
-      }
-
-      const response = await restored.agent.com.atproto.repo.listRecords({
-        repo: did,
+      // Use unauthenticated agent for read-only listRecords (faster, no OAuth init needed)
+      const agent = new AtpAgent({ service: currentSession.pdsUrl })
+      const response = await agent.com.atproto.repo.listRecords({
+        repo: currentSession.did,
         collection: 'social.attps.ageassurance',
         limit: 100,
       })
