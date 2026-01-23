@@ -56,9 +56,14 @@ export function Header() {
             <React.Fragment key={item.name}>
               <li
                 onMouseEnter={handleMouseEnter}
-                className="hover:text-primary text-primary/60 z-10 block cursor-pointer px-4 py-2 text-sm font-medium tracking-tight transition-colors duration-200 w-20 text-center"
+                className="z-10 block cursor-pointer text-sm font-medium tracking-tight transition-colors duration-200 w-20 text-center"
               >
-                <a href={item.href}>{item.name}</a>
+                <a
+                  href={item.href}
+                  className="block px-4 py-2 hover:text-primary text-primary/60"
+                >
+                  {item.name}
+                </a>
               </li>
               {index === 0 && <li className="w-14" />}
             </React.Fragment>

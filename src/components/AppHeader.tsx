@@ -59,9 +59,14 @@ export function AppHeader({ variant = 'light' }: AppHeaderProps) {
             <React.Fragment key={item.name}>
               <li
                 onMouseEnter={handleMouseEnter}
-                className="hover:text-primary text-primary/60 z-10 block cursor-pointer px-4 py-2 text-sm font-medium tracking-tight transition-colors duration-200 w-24 text-center"
+                className="z-10 block cursor-pointer text-sm font-medium tracking-tight transition-colors duration-200 w-24 text-center"
               >
-                <Link href={item.href}>{item.name}</Link>
+                <Link
+                  href={item.href}
+                  className="block px-4 py-2 hover:text-primary text-primary/60"
+                >
+                  {item.name}
+                </Link>
               </li>
               {index === 0 && <li className="w-14" />}
             </React.Fragment>
