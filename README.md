@@ -1,4 +1,6 @@
-# ATTPS Age Assurance
+![ATTPS Age Assurance](src/banner.png)
+
+# Private Age Assurance on Bluesky
 
 Privacy-first age assurance for the AT Protocol. Users prove they are 18+ using Self Protocol's zero-knowledge proofs, and receive a cryptographically signed attestation written to their PDS.
 
@@ -113,11 +115,14 @@ src/
 ├── components/
 │   ├── AppHeader.tsx               # App navigation header
 │   ├── Header.tsx                  # Landing page header
-│   └── LoginButton.tsx             # OAuth login button
+│   ├── LoginButton.tsx             # OAuth login button
+│   └── magicui/                    # UI components
+│       └── sphere-mask.tsx         # Animated sphere background
 └── lib/
     ├── atproto.ts                  # AT Protocol OAuth client
     ├── session.ts                  # Session management
-    └── logo.ts                     # Base64 logo for Self QR
+    ├── logo.ts                     # Base64 logo for Self QR
+    └── utils.ts                    # Utility functions
 ```
 
 ## Endpoints
