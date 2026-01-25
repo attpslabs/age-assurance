@@ -4,7 +4,10 @@
 	"dependencies": {
 		"@atproto/api": "^0.18.16",
 		"@atproto/oauth-client-browser": "^0.3.39",
+		"@mdx-js/loader": "^3.1.1",
+		"@mdx-js/react": "^3.1.1",
 		"@netlify/blobs": "^10.0.0",
+		"@next/mdx": "^16.1.4",
 		"@noble/ed25519": "^3.0.0",
 		"@selfxyz/core": "^1.1.0-beta.7",
 		"@selfxyz/qrcode": "^1.0.17",

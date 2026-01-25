@@ -1,0 +1,57 @@
+# Privacy Notice
+
+**Last Updated: January 25, 2026**
+
+This Privacy Notice governs how we process information when you access attps.social (the "Site") and any products, services, or offerings we provide (collectively, the "Service"). This is a binding agreement between ATTPS Labs Limited ("ATTPS", "we", "our", or "us") and you ("you" or "your"), and is incorporated into the ATTPS Terms of Service.
+
+By using the Service, you also agree to Self Protocol's Privacy Notice (https://self.xyz/privacy) and Bluesky's AT Protocol Network Services Privacy Notice (https://bsky.social/about/support/network-services-privacy-policy).
+
+## What We Collect
+
+When you use attps.social, we process:
+
+- **Your DID** (Decentralized Identifier) from AT Protocol OAuth sign-in
+- **Verification status** (whether Self Protocol confirmed you are 18+)
+- **Timestamp** of when verification occurred
+- **Session identifiers** (temporary UUIDs for the verification flow)
+
+## What We Do NOT Collect
+
+Thanks to Self Protocol's zero-knowledge proofs:
+
+- We never see your date of birth
+- We never see your passport data
+- We never receive any personal information from your identity document
+
+## How We Use Your Data
+
+We do not sell your data or any other data.
+
+Your DID and verification status are used solely to generate a signed attestation that you can write to your PDS. Session data is temporary and deleted after the verification flow completes.
+
+## What Gets Written to Your PDS
+
+The attestation you write to your PDS contains: your DID, the boolean "ageAtLeast18", the timestamp, our assurer DID, and our cryptographic signature. This is public data stored on your Personal Data Server under your control.
+
+## Data Deletion
+
+You may delete your attestation at any time via attps.social/attestations. This removes the attestation from your PDS. We do not retain verification data after the attestation flow completes—there is nothing stored on our servers to delete.
+
+## Third Parties
+
+- **Self Protocol** processes your identity verification via zero-knowledge proofs
+- **AT Protocol** handles OAuth authentication and PDS storage
+- **Netlify** hosts our service and temporarily stores verification session data (UUID and timestamp) during the verification flow
+- **PLC Directory** resolves decentralized identifiers as part of AT Protocol authentication
+
+We do not share your data with any other third parties.
+
+## Contact
+
+DM @attps.social on Bluesky<br />
+Email hello at attpslabs dot com<br />
+
+ATTPS Labs Limited<br />
+75 Prodromou Avenue, 4th floor<br />
+Oneworld Parkview House<br />
+2063 Nicosia, Cyprus

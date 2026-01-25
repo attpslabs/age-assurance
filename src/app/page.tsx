@@ -134,29 +134,6 @@ export default function Home() {
         <section id="apps" className="w-full max-w-2xl mt-24 scroll-mt-24">
           <h2 className="text-4xl md:text-5xl text-white text-center mb-8" style={{ fontFamily: 'var(--font-dm-serif-text)' }}>For Apps</h2>
         </section>
-
-      <footer className="mt-16 text-center text-sm text-gray-500">
-        <p>
-          Powered by{' '}
-          <a
-            href="https://self.xyz"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-gray-300"
-          >
-            Self Protocol
-          </a>{' '}
-          and{' '}
-          <a
-            href="https://atproto.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-gray-300"
-          >
-            AT Protocol
-          </a>
-        </p>
-      </footer>
       </div>
     </>
   )
