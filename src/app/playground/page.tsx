@@ -82,7 +82,7 @@ export default function PlaygroundHome() {
 
             <div className="w-full rounded-xl p-6" style={{ backgroundColor: '#1D1D1F' }}>
               <h2 className="text-white font-semibold mb-3">How it works</h2>
-              <ol className="text-sm text-gray-400 space-y-2 list-decimal pl-5">
+              <ol className="text-lg text-gray-400 space-y-2 list-decimal pl-5">
                 <li>Sign in with your Bluesky account</li>
                 <li>
                   Open the Self app on your phone
@@ -123,7 +123,7 @@ export default function PlaygroundHome() {
                 </li>
                 <li>See the attestation flow in action</li>
               </ol>
-              <p className="text-xs text-gray-500 mt-4">
+              <p className="text-lg text-gray-500 mt-4">
                 Test attestations are written to a separate collection and are not valid verifications.
               </p>
             </div>
@@ -131,7 +131,7 @@ export default function PlaygroundHome() {
             <div className="text-center">
               <a
                 href="/"
-                className="text-orange-500 hover:text-orange-500 text-sm font-medium"
+                className="text-orange-500 hover:text-orange-500 text-lg font-medium"
               >
                 Go to real verification →
               </a>

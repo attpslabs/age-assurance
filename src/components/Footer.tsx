@@ -31,7 +31,7 @@ export function Footer() {
           <StarIcon />
           <div>
             <h2 className="text-lg font-bold">Private Age Assurance</h2>
-            <p className="text-sm text-gray-400">Built by ATTPS Labs Ltd</p>
+            <p className="text-lg text-gray-400">Built by ATTPS Labs Ltd</p>
           </div>
         </div>
 
@@ -59,13 +59,13 @@ export function Footer() {
           {links.map((link, index) => (
             <li
               key={index}
-              className="text-sm font-medium text-gray-500 transition-all duration-100 ease-linear hover:text-white hover:underline hover:underline-offset-4"
+              className="text-lg font-medium text-gray-500 transition-all duration-100 ease-linear hover:text-white hover:underline hover:underline-offset-4"
             >
               <Link href={link.url}>{link.text}</Link>
             </li>
           ))}
         </ul>
-        <div className="flex items-center justify-between text-sm font-medium tracking-tight text-gray-500">
+        <div className="flex items-center justify-between text-lg font-medium tracking-tight text-gray-500">
           <p>
             Powered by{' '}
             <a href="https://self.xyz" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline hover:underline-offset-4">

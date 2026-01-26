@@ -204,7 +204,7 @@ export default function PlaygroundAssurePage() {
                   Test Attestation
                 </h2>
                 <div className="bg-yellow-500/10 rounded-lg p-3 mb-4">
-                  <p className="text-yellow-500 text-sm text-center">
+                  <p className="text-yellow-500 text-lg text-center">
                     This is a test flow using mock passports. The attestation will be written to a test collection.
                   </p>
                 </div>
@@ -219,7 +219,7 @@ export default function PlaygroundAssurePage() {
                     <span className="font-medium text-white">
                       Test: Prove I am 18 or older
                     </span>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-lg text-gray-500 mt-1">
                       Use a mock passport in the Self app to test the verification flow.
                     </p>
                   </div>
@@ -257,7 +257,7 @@ export default function PlaygroundAssurePage() {
                     size={250}
                   />
                 </div>
-                <p className="text-sm text-gray-400 text-center">
+                <p className="text-lg text-gray-400 text-center">
                   Open the Self app and scan the QR code. Use a{' '}
                   <a
                     href="https://docs.self.xyz/use-self/using-mock-passports#generating-mock-passport"
@@ -301,7 +301,7 @@ export default function PlaygroundAssurePage() {
                 <h2 className="text-lg font-semibold text-white mb-2 text-center">
                   Test Verified!
                 </h2>
-                <p className="text-sm text-gray-400 mb-4 text-center">
+                <p className="text-lg text-gray-400 mb-4 text-center">
                   Review the test attestation that will be written:
                 </p>
                 <div className="bg-gray-800 rounded-lg p-4 mb-4 font-mono text-sm">
@@ -322,7 +322,7 @@ export default function PlaygroundAssurePage() {
 )}
                   </pre>
                 </div>
-                <p className="text-xs text-gray-500 mb-4 text-center">
+                <p className="text-lg text-gray-500 mb-4 text-center">
                   This is a TEST attestation and is NOT a valid age verification.
                 </p>
                 <button
@@ -367,10 +367,10 @@ export default function PlaygroundAssurePage() {
                   The test attestation has been written to your account.
                 </p>
                 <div className="bg-yellow-500/10 border border-orange-500/30 rounded-lg p-4 mb-6">
-                  <p className="text-yellow-500 text-sm font-medium mb-2">
+                  <p className="text-yellow-500 text-lg font-medium mb-2">
                     This is NOT a valid verification
                   </p>
-                  <p className="text-gray-400 text-sm">
+                  <p className="text-gray-400 text-lg">
                     To complete a real age verification, go to the main page and use your real passport.
                   </p>
                 </div>
@@ -416,7 +416,7 @@ export default function PlaygroundAssurePage() {
 
           <div className="w-full rounded-xl p-6" style={{ backgroundColor: '#1D1D1F' }}>
             <h2 className="text-white font-semibold mb-3">How it works</h2>
-            <ol className="text-sm text-gray-400 space-y-2 list-decimal pl-5">
+            <ol className="text-lg text-gray-400 space-y-2 list-decimal pl-5">
               <li className="line-through text-gray-500">Sign in with your Bluesky account</li>
               <li>
                 Open the Self app on your phone
@@ -457,7 +457,7 @@ export default function PlaygroundAssurePage() {
               </li>
               <li>See the attestation flow in action</li>
             </ol>
-            <p className="text-xs text-gray-500 mt-4">
+            <p className="text-lg text-gray-500 mt-4">
               Test attestations are written to a separate collection and are not valid verifications.
             </p>
           </div>
@@ -465,14 +465,14 @@ export default function PlaygroundAssurePage() {
           <div className="flex items-center gap-4">
             <Link
               href="/"
-              className="text-sm text-orange-500 hover:text-orange-500 font-medium"
+              className="text-lg text-orange-500 hover:text-orange-500 font-medium"
             >
               Real verification
             </Link>
             <span className="text-gray-500">|</span>
             <button
               onClick={handleSignOut}
-              className="text-sm text-gray-500 hover:text-gray-400 underline"
+              className="text-lg text-gray-500 hover:text-gray-400 underline"
             >
               Sign out
             </button>

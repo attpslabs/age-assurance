@@ -214,7 +214,7 @@ export default function AssurePage() {
                 <h2 className="text-lg font-semibold text-white mb-4 text-center">
                   Choose Your Attestation
                 </h2>
-                <p className="text-sm text-gray-400 mb-6 text-center">
+                <p className="text-lg text-gray-400 mb-6 text-center">
                   Select what you would like to prove and add to your AT Protocol
                   account. This information will be publicly visible.
                 </p>
@@ -229,7 +229,7 @@ export default function AssurePage() {
                     <span className="font-medium text-white">
                       Prove I am 18 or older
                     </span>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-lg text-gray-500 mt-1">
                       Verify your age using your passport via the Self app. Only a
                       cryptographic proof is stored - no personal data.
                     </p>
@@ -268,7 +268,7 @@ export default function AssurePage() {
                     size={250}
                   />
                 </div>
-                <p className="text-sm text-gray-400 text-center">
+                <p className="text-lg text-gray-400 text-center">
                   Scan the QR code with the Self app to verify your age using your
                   passport. No personal data is stored - only a cryptographic
                   proof that you are 18+.
@@ -305,7 +305,7 @@ export default function AssurePage() {
                 <h2 className="text-lg font-semibold text-white mb-2 text-center">
                   Age Verified!
                 </h2>
-                <p className="text-sm text-gray-400 mb-4 text-center">
+                <p className="text-lg text-gray-400 mb-4 text-center">
                   Review the signed attestation that will be written to your account:
                 </p>
                 <div className="bg-gray-800 rounded-lg p-4 mb-4 font-mono text-sm">
@@ -326,7 +326,7 @@ export default function AssurePage() {
 )}
                   </pre>
                 </div>
-                <p className="text-xs text-gray-500 mb-4 text-center">
+                <p className="text-lg text-gray-500 mb-4 text-center">
                   This record includes a cryptographic signature from @attps.social
                   that proves the attestation is authentic.
                 </p>
@@ -372,12 +372,12 @@ export default function AssurePage() {
                   Your age has been verified and the attestation has been written
                   to your AT Protocol account.
                 </p>
-                <p className="text-sm text-gray-500 mb-4">
+                <p className="text-lg text-gray-500 mb-4">
                   Apps that trust @attps.social can now verify you are 18+.
                 </p>
                 <Link
                   href="/attestations"
-                  className="text-orange-500 hover:text-orange-500 font-medium text-sm"
+                  className="text-orange-500 hover:text-orange-500 font-medium text-lg"
                 >
                   View & manage your attestations
                 </Link>
@@ -423,14 +423,14 @@ export default function AssurePage() {
           <div className="flex items-center gap-4">
             <Link
               href="/attestations"
-              className="text-sm text-orange-500 hover:text-orange-500 font-medium"
+              className="text-lg text-orange-500 hover:text-orange-500 font-medium"
             >
               Manage attestations
             </Link>
             <span className="text-gray-500">|</span>
             <button
               onClick={handleSignOut}
-              className="text-sm text-gray-500 hover:text-gray-400 underline"
+              className="text-lg text-gray-500 hover:text-gray-400 underline"
             >
               Sign out
             </button>

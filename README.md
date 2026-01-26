@@ -1,4 +1,4 @@
-![ATTPS Age Assurance](src/banner.png)
+![ATTPS Age Assurance](public/assets/banner.png)
 
 # Private Age Assurance on Bluesky
 

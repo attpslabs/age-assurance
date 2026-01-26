@@ -193,7 +193,7 @@ export default function AttestationsPage() {
             </h2>
 
             {error && (
-              <div className="mb-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg text-white text-sm flex items-center gap-2">
+              <div className="mb-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg text-white text-lg flex items-center gap-2">
                 <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -246,7 +246,7 @@ export default function AttestationsPage() {
                           )}
                         </div>
 
-                        <div className="space-y-2 text-sm">
+                        <div className="space-y-2 text-lg">
                           <div>
                             <span className="font-medium text-gray-300">Age at least 18:</span>{' '}
                             <span className="text-gray-400">{attestation.value.ageAtLeast18 ? 'true' : 'false'}</span>
@@ -342,14 +342,14 @@ export default function AttestationsPage() {
           <div className="flex items-center gap-4">
             <Link
               href="/assure"
-              className="text-sm text-orange-500 hover:text-orange-500 font-medium"
+              className="text-lg text-orange-500 hover:text-orange-500 font-medium"
             >
               Add attestation
             </Link>
             <span className="text-gray-500">|</span>
             <button
               onClick={handleSignOut}
-              className="text-sm text-gray-500 hover:text-gray-400 underline"
+              className="text-lg text-gray-500 hover:text-gray-400 underline"
             >
               Sign out
             </button>
