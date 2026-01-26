@@ -20,6 +20,33 @@ Privacy-first age assurance for the AT Protocol. Users prove they are 18+ using 
 9. **User reviews** the attestation
 10. **User writes attestation** to their PDS
 
+## DID to UUID Mapping
+
+The Self SDK requires a UUID for user identification, but AT Protocol uses DIDs. We use deterministic UUID generation to bridge these systems.
+
+### Conversion
+
+DIDs are converted to UUIDs using UUIDv5 with the DNS namespace:
+
+```typescript
+import { v5 as uuidv5 } from 'uuid'
+
+const DID_NAMESPACE = '6ba7b810-9dad-11d1-80b4-00c04fd430c8' // DNS namespace
+const userUuid = uuidv5(session.did, DID_NAMESPACE)
+```
+
+This ensures the same DID always generates the same UUID, allowing the backend to match verification results to users.
+
+### Self SDK UUID Format
+
+When the Self SDK stores verification data, it transforms the UUID into a longer format:
+
+```
+000000000000000000000000000000000000000000000000000000000000a4ec + 00000000000000000000000000000000 + uuid_without_dashes
+```
+
+The backend reconstructs this format when looking up verification results.
+
 ## Attestation Record
 
 Written to `social.attps.ageassurance` collection with rkey `self`:
