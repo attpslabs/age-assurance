@@ -162,6 +162,10 @@ src/
 | `GET /api/playground/assure?did=...&uuid=...` | Playground signed attestation |
 | `GET /.well-known/attestation-keys.json` | Public keys for signature verification |
 
+
 ## License
 
-MIT
+This project is dual-licensed under MIT and Apache 2.0 terms:
+
+- MIT license ([LICENSE-MIT.txt](https://github.com/attpslabs/age-assurance/blob/main/LICENSE-MIT.txt) or http://opensource.org/licenses/MIT)
+- Apache License, Version 2.0, ([LICENSE-APACHE.txt](https://github.com/attpslabs/age-assurance/blob/main/LICENSE-APACHE.txt) or http://www.apache.org/licenses/LICENSE-2.0)
