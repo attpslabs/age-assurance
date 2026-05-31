@@ -1,19 +1,19 @@
 ![ATTPS Age Assurance](public/assets/banner.png)
 
-# Private Age Assurance on Bluesky
+# Privacy-frst age assurance for DIDs
 
-Privacy-first age assurance for the AT Protocol. Users prove they are 18+ using Self Protocol's zero-knowledge proofs, and receive a cryptographically signed attestation written to their PDS.
+Prove to be 18 or older using zero-knowledge proofs (using the [self protocol](https://services.google.com/fh/files/misc/self_case_study.pdf) iOS/Android app, and receive a cryptographically signed attestation written to your PDS.
 
 **Live:** [attps.social](https://attps.social)
 **Assurer DID:** `did:plc:uh7zr6mlwxneec773o5dkcrl` (@attps.social)
 
 ## How It Works
 
-1. **User signs in** via AT Protocol OAuth
-2. **User consents** to proving they are 18+
+1. **Sign in** with OAuth
+2. **Consent steps** to prove one is 18 or older. No other information is attested to, but Self Protocol can be used to attest to further credentials like country, or sex.
 3. **QR code displayed** containing verification endpoint and user's DID
 4. **User scans QR** with Self app on their phone
-5. **Self app generates ZK proof** from passport (proves age without revealing personal data)
+5. **Self app generates ZK proof** from passport (proves age without revealing personal data) using google TEE (see [whitepaper/case-study](https://services.google.com/fh/files/misc/self_case_study.pdf) 2026)
 6. **Self relayer sends proof** to backend (`POST /api/assure`)
 7. **Backend verifies proof** using Self SDK and stores verification status
 8. **Browser fetches signed attestation** (`GET /api/assure?did=...`)
