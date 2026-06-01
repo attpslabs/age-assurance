@@ -2,7 +2,7 @@
 
 # Privacy-frst age assurance for DIDs
 
-Prove to be 18 or older using zero-knowledge proofs (using the [self protocol](https://services.google.com/fh/files/misc/self_case_study.pdf) iOS/Android app, and receive a cryptographically signed attestation written to your PDS.
+Prove to be 18 or older using zero-knowledge proofs (using the [self protocol](https://services.google.com/fh/files/misc/self_case_study.pdf) iOS/Android app), and receive a cryptographically signed attestation written to your PDS.
 
 **Live:** [attps.social](https://attps.social)
 **Assurer DID:** `did:plc:uh7zr6mlwxneec773o5dkcrl` (@attps.social)
