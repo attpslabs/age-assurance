@@ -1,4 +1,4 @@
-![ATTPS Age Assurance](public/assets/banner.png)
+![ATTPS Age Verification](public/assets/banner.png)
 
 # Privacy-frst age assurance for DIDs
 
