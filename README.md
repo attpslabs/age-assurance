@@ -1,6 +1,6 @@
 ![ATTPS Age Verification](public/assets/banner.png)
 
-# Privacy-frst age verification for DIDs
+# privacy-frst zero-knowledge passport data verification for DIDs
 
 Prove to be 18 or older using zero-knowledge proofs (using the [self protocol](https://services.google.com/fh/files/misc/self_case_study.pdf) iOS/Android app), and receive a cryptographically signed attestation written to your PDS.
 
